@@ -25,6 +25,9 @@
         <activity 
             android:name=".SymptomList"
             ></activity>
+        <activity 
+            android:name=".SummaryActivity"
+            ></activity>
     </application>
 
 </manifest>

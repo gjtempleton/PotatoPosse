@@ -2,6 +2,8 @@ package com.example.potatoposse;
 
 import java.io.File;
 
+import com.example.sensorvideorecorder.VideoPlaybackActivity;
+
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
