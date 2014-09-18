@@ -64,10 +64,7 @@ public class SQLiteHandler extends SQLiteOpenHelper{
 		int j  =0;
 		if (cursor.moveToFirst()) {
 			do {
-				data[j][0] = cursor.getString(0);
-				data[j][1] = cursor.getString(1);
-				data[j][2] = cursor.getString(2);
-				data[j][3] = cursor.getString(3);
+				data[j] = cursor.getColumnNames();
 				Log.w("Column Names", data[j].toString());
 				// get  the  data into array,or class variable
 
