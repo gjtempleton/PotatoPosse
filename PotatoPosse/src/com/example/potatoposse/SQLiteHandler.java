@@ -1,0 +1,82 @@
+package com.example.potatoposse;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+public class SQLiteHandler extends SQLiteOpenHelper{
+
+	// Database Version
+	private static final int DATABASE_VERSION = 1;
+	// Database Name
+	private static final String DATABASE_NAME = "PotatoDB";
+
+	public SQLiteHandler(Context context) {
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);  
+	}
+
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		// SQL statement to create symptoms table
+		String CREATE_SYMPTOM_TABLE = "CREATE TABLE symptoms ( " +
+				"category TEXT, "+
+				"name TEXT, "+
+				"description TEXT, "+
+				"test TEXT)";
+
+		// create symptoms table
+		db.execSQL(CREATE_SYMPTOM_TABLE);
+
+		//Populate the symptoms table with dummy data
+		String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('PLANT', 'TEST INSECT', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
+
+		db.execSQL(INSERT_DUMMY_DATA);
+		
+		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('INSECT', 'TEST INSECT', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
+
+		db.execSQL(INSERT_DUMMY_DATA);
+		
+		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST INSECT', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
+
+		db.execSQL(INSERT_DUMMY_DATA);
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		// Drop older books table if existed
+		db.execSQL("DROP TABLE IF EXISTS symptoms");
+
+		// create fresh books table
+		this.onCreate(db);
+	}
+
+	public String[][]  getSymptoms(String type){
+
+		String Table_Name="symptoms";
+
+		String selectQuery = "SELECT * FROM  "+ Table_Name + " WHERE category='"+type+"'";
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+		String[][] data = null;
+		int j  =0;
+		if (cursor.moveToFirst()) {
+			do {
+				data[j] = cursor.getColumnNames();
+				Log.w("Column Names", data[j].toString());
+				// get  the  data into array,or class variable
+
+			} while (cursor.moveToNext());
+		}
+		db.close();
+		if(data!=null){
+			for(int i =0; i<data.length; i++){
+				Log.w("Data", data[i].toString());
+			}
+		}
+		return data;
+	}
+
+}

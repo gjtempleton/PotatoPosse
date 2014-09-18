@@ -1,0 +1,5 @@
+package com.example.potatoposse;
+
+public class SymptomList extends Activity{
+
+}
