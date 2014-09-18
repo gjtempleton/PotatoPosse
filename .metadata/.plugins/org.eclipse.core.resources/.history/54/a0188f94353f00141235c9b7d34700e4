@@ -26,7 +26,7 @@ public class SymptomList extends ListActivity{
 			SQLiteHandler myHandler = new SQLiteHandler(getBaseContext());
 			response = myHandler.getSymptoms(type);
 			String[] dummy = {"1", "2"};
-			setListAdapter(new ThumbnailAdapter(this, R.layout.row, response));
+			setListAdapter(new ThumbnailAdapter(this, R.layout.row, dummy));
 			
 		}
 	}
@@ -49,7 +49,7 @@ public class SymptomList extends ListActivity{
 				}
 				ProgressBar progress = (ProgressBar)row.findViewById(R.id.ProgressBar);
 				final TextView textfilePath = (TextView)row.findViewById(R.id.FilePath);
-				textfilePath.setText(response[position][1]);
+				textfilePath.setText(response[position-1][0]);
 				ImageView imageThumbnail = (ImageView)row.findViewById(R.id.Thumbnail);
 				return row;
 			}

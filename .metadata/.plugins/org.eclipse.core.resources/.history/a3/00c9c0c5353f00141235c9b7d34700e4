@@ -49,7 +49,7 @@ public class SymptomList extends ListActivity{
 				}
 				ProgressBar progress = (ProgressBar)row.findViewById(R.id.ProgressBar);
 				final TextView textfilePath = (TextView)row.findViewById(R.id.FilePath);
-				textfilePath.setText(response[position][1]);
+				textfilePath.setText(response[position][0]);
 				ImageView imageThumbnail = (ImageView)row.findViewById(R.id.Thumbnail);
 				return row;
 			}

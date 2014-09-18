@@ -26,16 +26,16 @@ public class SymptomList extends ListActivity{
 			SQLiteHandler myHandler = new SQLiteHandler(getBaseContext());
 			response = myHandler.getSymptoms(type);
 			String[] dummy = {"1", "2"};
-			setListAdapter(new ThumbnailAdapter(this, R.layout.row, response));
+			setListAdapter(new ThumbnailAdapter(this, R.layout.row, dummy));
 			
 		}
 	}
 	
 	//Array adapter to create list asynchronously and update it
 		//Needed as thumbnail creation is slow 
-		public class ThumbnailAdapter extends ArrayAdapter<String[]>{
+		public class ThumbnailAdapter extends ArrayAdapter<String>{
 
-			public ThumbnailAdapter(Context context, int textViewResourceId, String[][] symptoms) {
+			public ThumbnailAdapter(Context context, int textViewResourceId, String[] symptoms) {
 				super(context, textViewResourceId, symptoms);
 			}
 
@@ -49,7 +49,7 @@ public class SymptomList extends ListActivity{
 				}
 				ProgressBar progress = (ProgressBar)row.findViewById(R.id.ProgressBar);
 				final TextView textfilePath = (TextView)row.findViewById(R.id.FilePath);
-				textfilePath.setText(response[position][1]);
+				textfilePath.setText(response[position-1][0]);
 				ImageView imageThumbnail = (ImageView)row.findViewById(R.id.Thumbnail);
 				return row;
 			}
