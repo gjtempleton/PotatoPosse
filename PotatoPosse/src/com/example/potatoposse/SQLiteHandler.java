@@ -45,23 +45,6 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 
 				// create symptoms table
 				db.execSQL(CREATE_SYMPTOM_TABLE);
-
-<<<<<<< HEAD
-				//Populate the symptoms table with dummy data
-				String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('PLANT', 'TEST PLANT', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
-
-				db.execSQL(INSERT_DUMMY_DATA);
-
-				INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('INSECT', 'TEST INSECT', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
-
-				db.execSQL(INSERT_DUMMY_DATA);
-
-				INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
-				String INSERT_DUMMY_DATA2 = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER 23', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
-
-				db.execSQL(INSERT_DUMMY_DATA);
-				db.execSQL(INSERT_DUMMY_DATA2);
-=======
 		//Populate the symptoms table with dummy data
 
 		String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('LEAF', 'TEST LEAF', 'THIS IS A TEST LEAF', 'VISUAL')";
@@ -72,7 +55,6 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 		
 		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER', 'THIS IS A TEST TUBER', 'VISUAL')";
 		db.execSQL(INSERT_DUMMY_DATA);
->>>>>>> origin/master
 	}
 
 	@Override

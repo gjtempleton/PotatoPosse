@@ -73,6 +73,7 @@ SensorVideoRecorder/res/drawable-hdpi/blackline_verti.png
 SensorVideoRecorder/libs/armeabi-v7a/libDropboxSync.so
 SensorVideoRecorder/res/drawable-hdpi/blackline_verti.png
 SensorVideoRecorder/res/layout/row.xml
+.metadata/*
 .metadata/.log
 .metadata/.log
 .metadata/.plugins/org.eclipse.core.resources/.history/3c/d030344e343f00141235c9b7d34700e4
@@ -150,4 +151,3 @@ PotatoPosse/bin/R.txt
 *.ap_
 PotatoPosse/gen/com/example/potatoposse/R.java
 PotatoPosse/gen/android/support/v7/appcompat/R.java
-*.class
