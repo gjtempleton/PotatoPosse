@@ -2,10 +2,13 @@ package com.example.potatoposse;
 
 import java.io.File;
 
+import com.example.potatoposse.R.drawable;
+
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,19 +49,20 @@ public class SymptomList extends ListActivity{
 					LayoutInflater inflater=getLayoutInflater();
 					row=inflater.inflate(R.layout.row, parent, false);
 				}
-				ProgressBar progress = (ProgressBar)row.findViewById(R.id.ProgressBar);
 				final TextView textfilePath = (TextView)row.findViewById(R.id.FilePath);
 				textfilePath.setText(response[position][1]);
 				ImageView imageThumbnail = (ImageView)row.findViewById(R.id.Thumbnail);
+				//imageThumbnail = (ImageView)findViewById(drawable.ic_tab_alerts_off);
+				//imageThumbnail.setVisibility(View.VISIBLE);
 				final String symptomName = response[position][1];
 				row.setOnClickListener(new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						Intent videoView = new Intent(getApplicationContext(), SummaryActivity.class);
-						videoView.putExtra("SYMPTOM_NAME", symptomName);
-						startActivity(videoView);
+						Intent summaryView = new Intent(getApplicationContext(), SummaryActivity.class);
+						summaryView.putExtra("SYMPTOM_NAME", symptomName);
+						startActivity(summaryView);
 						
 					}
 				});

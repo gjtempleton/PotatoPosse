@@ -244,8 +244,7 @@ int drawable ic_tab_summary_on 0x7f02005d
 int drawable ic_tab_volume 0x7f02005e
 int drawable ic_tab_volume_off 0x7f02005f
 int drawable ic_tab_volume_on 0x7f020060
-int id FilePath 0x7f05003f
-int id ProgressBar 0x7f05003e
+int id FilePath 0x7f05003e
 int id Thumbnail 0x7f05003d
 int id action_bar 0x7f05001c
 int id action_bar_activity_content 0x7f050015
@@ -258,7 +257,7 @@ int id action_context_bar 0x7f05001d
 int id action_menu_divider 0x7f050016
 int id action_menu_presenter 0x7f050017
 int id action_mode_close_button 0x7f050024
-int id action_settings 0x7f050040
+int id action_settings 0x7f05003f
 int id activity_chooser_view_content 0x7f050025
 int id always 0x7f05000b
 int id beginning 0x7f050011

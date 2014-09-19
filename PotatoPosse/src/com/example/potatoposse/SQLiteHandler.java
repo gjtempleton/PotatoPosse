@@ -29,29 +29,37 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		
+	}
+	
+	@Override
+	public void onOpen(SQLiteDatabase db){
 		// SQL statement to create symptoms table
-		String CREATE_SYMPTOM_TABLE = "CREATE TABLE symptoms ( " +
-				"category TEXT, "+
-				"name TEXT, "+
-				"description TEXT, "+
-				"test TEXT)";
+				// Drop older symptoms table if existed
+				db.execSQL("DROP TABLE IF EXISTS symptoms");
+				String CREATE_SYMPTOM_TABLE = "CREATE TABLE symptoms ( " +
+						"category TEXT, "+
+						"name TEXT, "+
+						"description TEXT, "+
+						"test TEXT)";
 
-		// create symptoms table
-		db.execSQL(CREATE_SYMPTOM_TABLE);
+				// create symptoms table
+				db.execSQL(CREATE_SYMPTOM_TABLE);
 
-		//Populate the symptoms table with dummy data
-		String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('PLANT', 'TEST PLANT', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
+				//Populate the symptoms table with dummy data
+				String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('PLANT', 'TEST PLANT', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
 
-		db.execSQL(INSERT_DUMMY_DATA);
-		
-		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('INSECT', 'TEST INSECT', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
+				db.execSQL(INSERT_DUMMY_DATA);
 
-		db.execSQL(INSERT_DUMMY_DATA);
-		
-		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
-		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER 23', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
+				INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('INSECT', 'TEST INSECT', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
 
-		db.execSQL(INSERT_DUMMY_DATA);
+				db.execSQL(INSERT_DUMMY_DATA);
+
+				INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
+				String INSERT_DUMMY_DATA2 = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER 23', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
+
+				db.execSQL(INSERT_DUMMY_DATA);
+				db.execSQL(INSERT_DUMMY_DATA2);
 	}
 
 	@Override
@@ -91,7 +99,7 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 		}
 		return data;
 	}
-	
+
 	public Bitmap[] getImages(String symptomName){
 		Bitmap[] result;
 		SQLiteDatabase db = this.getReadableDatabase();
