@@ -3,15 +3,23 @@ package com.example.potatoposse;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 public class MainActivity extends TabActivity 
-{
+{	
     @Override
     protected void onCreate(Bundle savedInstanceState) 
     {
@@ -23,18 +31,16 @@ public class MainActivity extends TabActivity
         setContentView(R.layout.activity_main);
         
         Resources res = getResources();
-        TabHost tabHost = getTabHost();
-        TabHost.TabSpec spec;  // Resusable TabSpec for each tab
+        final TabHost tabHost = getTabHost();
 	    Intent intent;  // Reusable Intent for each tab
-	    SQLiteHandler mySQLiteHandler = new SQLiteHandler(getApplicationContext());
-
+	    SQLiteHandler mySQLiteHandler = new SQLiteHandler(getApplicationContext());	   
+	   	    
 	    // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomList.class);
 	    intent.putExtra("TYPE", "LEAF");
 	    intent.putExtra("SQLITEHANDLER", mySQLiteHandler);
 	    // Initialize a TabSpec for each tab and add it to the TabHost
-	    spec = tabHost.newTabSpec("Leaf").setIndicator("Leaf", res.getDrawable(R.drawable.ic_tab_summary)).setContent(intent);
-	    tabHost.addTab(spec);
+	    tabHost.addTab(tabHost.newTabSpec("LEAF").setIndicator("LEAF").setContent(intent));
 	    
 	    // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomList.class);
@@ -42,8 +48,7 @@ public class MainActivity extends TabActivity
 	    intent.putExtra("TYPE", "PEST");
 	    intent.putExtra("SQLITEHANDLER", mySQLiteHandler);
 	    // Initialize a TabSpec for each tab and add it to the TabHost
-	    spec = tabHost.newTabSpec("Pest").setIndicator("Pest", res.getDrawable(R.drawable.ic_tab_volume)).setContent(intent);
-	    tabHost.addTab(spec);
+	    tabHost.addTab(tabHost.newTabSpec("PEST").setIndicator("PEST").setContent(intent));
 	    
 		 // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomList.class);
@@ -51,10 +56,52 @@ public class MainActivity extends TabActivity
 	    intent.putExtra("TYPE", "TUBER");
 	    intent.putExtra("SQLITEHANDLER", mySQLiteHandler);
 	    // Initialize a TabSpec for each tab and add it to the TabHost
-	    spec = tabHost.newTabSpec("Tuber").setIndicator("Tuber", res.getDrawable(R.drawable.ic_tab_alerts)).setContent(intent);
-	    tabHost.addTab(spec);
-
+	    tabHost.addTab(tabHost.newTabSpec("TUBER").setIndicator("TUBER").setContent(intent));
+	    
+	    tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() 
+	    {			
+			public void onTabChanged(String id) 
+			{
+				setTabColors(tabHost);
+			}
+		});
+	    
 	    tabHost.setCurrentTab(0);
+	    setTabColors(tabHost);
+    }
+    
+    private void setTabColors(TabHost tabHost)
+    {
+    	Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
+    	
+    	for (int i=0; i<tabHost.getTabWidget().getTabCount(); i++)
+    	{
+			TextView tv = (TextView)tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+	        LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+	        params.setMargins(0, 20, 0, 20);
+	        tv.setLayoutParams(params);
+		    tv.setTextSize(30);
+		    tv.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+		    tv.setTypeface(font);
+		    
+		    if (i == 0) 
+		    	tv.setText(getString(R.string.ic_leaf));
+		    else if (i == 1)
+		    	tv.setText(getString(R.string.ic_pest));
+		    else if (i == 2) 
+		    	tv.setText(getString(R.string.ic_tuber));
+			
+    		if (tabHost.getTabWidget().getChildAt(i).isSelected()) //if this tab is currently selected
+    		{
+    			tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.rgb(51,181,229));
+    			tv.setTextColor(Color.WHITE);
+    		}
+    		else //this tab is NOT currently selected
+    		{
+    			tabHost.getTabWidget().getChildAt(i).setBackgroundColor(0x00000000);
+    			tv.setTextColor(Color.BLACK);
+    		}   		
+    	}
     }
 
     @Override

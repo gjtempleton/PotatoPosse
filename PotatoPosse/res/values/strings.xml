@@ -4,5 +4,9 @@
     <string name="app_name">PotatoPosse</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    
+    <string name="ic_leaf">&#xf06c;</string>
+    <string name="ic_pest">&#xf188;</string>
+    <string name="ic_tuber">&#xf0c3;</string>
 
 </resources>
