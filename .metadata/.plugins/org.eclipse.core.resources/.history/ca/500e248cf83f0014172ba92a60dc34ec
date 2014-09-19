@@ -37,7 +37,6 @@ public class MainActivity extends TabActivity {
 	    
 	 // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomList.class);
-	    intent.removeExtra("TYPE");
 	    intent.putExtra("TYPE", "INSECT");
 	    intent.putExtra("SQLITEHANDLER", mySQLiteHandler);
 
@@ -49,7 +48,6 @@ public class MainActivity extends TabActivity {
 	    
 		 // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomList.class);
-	    intent.removeExtra("TYPE");
 	    intent.putExtra("TYPE", "TUBER");
 	    intent.putExtra("SQLITEHANDLER", mySQLiteHandler);
 

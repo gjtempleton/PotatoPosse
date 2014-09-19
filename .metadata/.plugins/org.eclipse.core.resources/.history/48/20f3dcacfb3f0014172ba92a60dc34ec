@@ -98,17 +98,14 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 		String query = "SELECT * FROM IMAGES WHERE SYMPTOM = " + symptomName;
 		Cursor cursor = db.rawQuery(query, null);
 		result = new Bitmap[cursor.getCount()];
-		int i =0;
 		if (cursor.moveToFirst()) {
 			do {
 				ByteArrayInputStream inputStream = new ByteArrayInputStream(cursor.getBlob(0));
 				Bitmap b = BitmapFactory.decodeStream(inputStream);
-				result[0] = b;
-				i++;
 			} while (cursor.moveToNext());
 		}
 		db.close();
-		return result;	
+		return result;		
 	}
 
 }

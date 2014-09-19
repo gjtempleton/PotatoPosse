@@ -1,6 +1,5 @@
 package com.example.potatoposse;
 
-import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 
 import android.content.Context;
@@ -8,8 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
@@ -56,10 +53,10 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// Drop older symptoms table if existed
+		// Drop older books table if existed
 		db.execSQL("DROP TABLE IF EXISTS symptoms");
 
-		// create fresh symptoms table
+		// create fresh books table
 		this.onCreate(db);
 	}
 
@@ -90,25 +87,6 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 			}
 		}
 		return data;
-	}
-	
-	public Bitmap[] getImages(String symptomName){
-		Bitmap[] result;
-		SQLiteDatabase db = this.getReadableDatabase();
-		String query = "SELECT * FROM IMAGES WHERE SYMPTOM = " + symptomName;
-		Cursor cursor = db.rawQuery(query, null);
-		result = new Bitmap[cursor.getCount()];
-		int i =0;
-		if (cursor.moveToFirst()) {
-			do {
-				ByteArrayInputStream inputStream = new ByteArrayInputStream(cursor.getBlob(0));
-				Bitmap b = BitmapFactory.decodeStream(inputStream);
-				result[0] = b;
-				i++;
-			} while (cursor.moveToNext());
-		}
-		db.close();
-		return result;	
 	}
 
 }
