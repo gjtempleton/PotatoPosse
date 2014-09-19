@@ -18,17 +18,15 @@ import android.widget.TextView;
 
 public class SymptomList extends ListActivity{
 	String[][]response = null;
-	
+	SQLiteHandler mySQLiteHandler;
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		String type = getIntent().getExtras().getString("TYPE");
+		mySQLiteHandler = (SQLiteHandler) getIntent().getSerializableExtra("SQLITEHANDLER");
 		if(type!=null){
-			SQLiteHandler myHandler = new SQLiteHandler(getBaseContext());
-			response = myHandler.getSymptoms(type);
-			String[] dummy = {"1", "2"};
-			setListAdapter(new ThumbnailAdapter(this, R.layout.row, response));
-			
+			response = mySQLiteHandler.getSymptoms(type);
+			setListAdapter(new ThumbnailAdapter(this, R.layout.row, response));			
 		}
 	}
 	

@@ -1,5 +1,6 @@
 package com.example.potatoposse;
 
+import android.support.v4.content.IntentCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -27,30 +28,49 @@ public class MainActivity extends TabActivity {
         TabHost tabHost = getTabHost();
         TabHost.TabSpec spec;  // Resusable TabSpec for each tab
 	    Intent intent;  // Reusable Intent for each tab
+	    SQLiteHandler mySQLiteHandler = new SQLiteHandler(getApplicationContext());
 
 	    // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomList.class);
+<<<<<<< HEAD
 	    intent.putExtra("TYPE", "LEAF");
+=======
+	    intent.putExtra("TYPE", "PLANT");
+	    intent.putExtra("SQLITEHANDLER", mySQLiteHandler);
+
+>>>>>>> origin/master
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    spec = tabHost.newTabSpec("Leaf").setIndicator("Leaf", res.getDrawable(R.drawable.ic_tab_summary)).setContent(intent);
 	    tabHost.addTab(spec);
 	    
 	    // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomList.class);
+<<<<<<< HEAD
 	    intent.putExtra("TYPE", "PEST");
+=======
+	    intent.removeExtra("TYPE");
+	    intent.putExtra("TYPE", "INSECT");
+	    intent.putExtra("SQLITEHANDLER", mySQLiteHandler);
+
+>>>>>>> origin/master
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    spec = tabHost.newTabSpec("Pest").setIndicator("Pest", res.getDrawable(R.drawable.ic_tab_volume)).setContent(intent);
 	    tabHost.addTab(spec);
 	    
 		 // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomList.class);
+	    intent.removeExtra("TYPE");
 	    intent.putExtra("TYPE", "TUBER");
+<<<<<<< HEAD
+=======
+	    intent.putExtra("SQLITEHANDLER", mySQLiteHandler);
+
+>>>>>>> origin/master
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    spec = tabHost.newTabSpec("Tuber").setIndicator("Tuber", res.getDrawable(R.drawable.ic_tab_alerts)).setContent(intent);
 	    tabHost.addTab(spec);
 
 	    tabHost.setCurrentTab(0);
-	    SQLiteHandler mySQLiteHandler = new SQLiteHandler(getApplicationContext());
     }
 
 

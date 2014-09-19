@@ -1,14 +1,23 @@
 package com.example.potatoposse;
 
+import java.io.ByteArrayInputStream;
+import java.io.Serializable;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
-public class SQLiteHandler extends SQLiteOpenHelper{
+public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// Database Version
 	private static final int DATABASE_VERSION = 1;
 	// Database Name
@@ -31,22 +40,33 @@ public class SQLiteHandler extends SQLiteOpenHelper{
 		db.execSQL(CREATE_SYMPTOM_TABLE);
 
 		//Populate the symptoms table with dummy data
+<<<<<<< HEAD
 		String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('LEAF', 'TEST LEAF', 'THIS IS A TEST LEAF', 'VISUAL')";
+=======
+		String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('PLANT', 'TEST PLANT', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
+
+>>>>>>> origin/master
 		db.execSQL(INSERT_DUMMY_DATA);
 		
 		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('PEST', 'TEST PEST', 'THIS IS A TEST PEST', 'VISUAL')";
 		db.execSQL(INSERT_DUMMY_DATA);
 		
+<<<<<<< HEAD
 		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER', 'THIS IS A TEST TUBER', 'VISUAL')";
+=======
+		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
+		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER 23', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
+
+>>>>>>> origin/master
 		db.execSQL(INSERT_DUMMY_DATA);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// Drop older books table if existed
+		// Drop older symptoms table if existed
 		db.execSQL("DROP TABLE IF EXISTS symptoms");
 
-		// create fresh books table
+		// create fresh symptoms table
 		this.onCreate(db);
 	}
 
@@ -77,6 +97,25 @@ public class SQLiteHandler extends SQLiteOpenHelper{
 			}
 		}
 		return data;
+	}
+	
+	public Bitmap[] getImages(String symptomName){
+		Bitmap[] result;
+		SQLiteDatabase db = this.getReadableDatabase();
+		String query = "SELECT * FROM IMAGES WHERE SYMPTOM = " + symptomName;
+		Cursor cursor = db.rawQuery(query, null);
+		result = new Bitmap[cursor.getCount()];
+		int i =0;
+		if (cursor.moveToFirst()) {
+			do {
+				ByteArrayInputStream inputStream = new ByteArrayInputStream(cursor.getBlob(0));
+				Bitmap b = BitmapFactory.decodeStream(inputStream);
+				result[0] = b;
+				i++;
+			} while (cursor.moveToNext());
+		}
+		db.close();
+		return result;	
 	}
 
 }
