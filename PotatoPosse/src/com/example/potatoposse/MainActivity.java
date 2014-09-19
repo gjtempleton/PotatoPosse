@@ -1,5 +1,6 @@
 package com.example.potatoposse;
 
+import android.support.v4.content.IntentCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -21,10 +22,12 @@ public class MainActivity extends TabActivity {
         TabHost tabHost = getTabHost();
         TabHost.TabSpec spec;  // Resusable TabSpec for each tab
 	    Intent intent;  // Reusable Intent for each tab
+	    SQLiteHandler mySQLiteHandler = new SQLiteHandler(getApplicationContext());
 
 	    // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomList.class);
 	    intent.putExtra("TYPE", "PLANT");
+	    intent.putExtra("SQLITEHANDLER", mySQLiteHandler);
 
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    spec = tabHost.newTabSpec("Plant").setIndicator("Plant",
@@ -35,6 +38,7 @@ public class MainActivity extends TabActivity {
 	 // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomList.class);
 	    intent.putExtra("TYPE", "INSECT");
+	    intent.putExtra("SQLITEHANDLER", mySQLiteHandler);
 
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    spec = tabHost.newTabSpec("Insect").setIndicator("Insect",
@@ -45,6 +49,7 @@ public class MainActivity extends TabActivity {
 		 // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomList.class);
 	    intent.putExtra("TYPE", "TUBER");
+	    intent.putExtra("SQLITEHANDLER", mySQLiteHandler);
 
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    spec = tabHost.newTabSpec("Tuber").setIndicator("Tuber",
@@ -53,7 +58,6 @@ public class MainActivity extends TabActivity {
 	    tabHost.addTab(spec);
 
 	    tabHost.setCurrentTab(0);
-	    SQLiteHandler mySQLiteHandler = new SQLiteHandler(getApplicationContext());
     }
 
 

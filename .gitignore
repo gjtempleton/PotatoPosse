@@ -136,3 +136,10 @@ SensorVideoRecorder/res/layout/row.xml
 .metadata/.plugins/org.eclipse.core.resources/.projects/PotatoPosse/.indexes/a0/d6/properties.index
 .metadata/.plugins/org.eclipse.core.resources/.projects/PotatoPosse/.indexes/a0/d6/history.index
 .metadata/.plugins/org.eclipse.core.resources/.projects/PotatoPosse/.markers.snap
+*.log
+*.log
+*.snap
+*.index
+*.markers
+*.prefs
+*.xmi

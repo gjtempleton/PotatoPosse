@@ -1,5 +1,7 @@
 package com.example.potatoposse;
 
+import java.io.Serializable;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,8 +9,12 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class SQLiteHandler extends SQLiteOpenHelper{
+public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// Database Version
 	private static final int DATABASE_VERSION = 1;
 	// Database Name
@@ -31,7 +37,7 @@ public class SQLiteHandler extends SQLiteOpenHelper{
 		db.execSQL(CREATE_SYMPTOM_TABLE);
 
 		//Populate the symptoms table with dummy data
-		String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('PLANT', 'TEST INSECT', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
+		String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('PLANT', 'TEST PLANT', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
 
 		db.execSQL(INSERT_DUMMY_DATA);
 		
@@ -39,7 +45,8 @@ public class SQLiteHandler extends SQLiteOpenHelper{
 
 		db.execSQL(INSERT_DUMMY_DATA);
 		
-		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST INSECT', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
+		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
+		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER 23', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
 
 		db.execSQL(INSERT_DUMMY_DATA);
 	}
