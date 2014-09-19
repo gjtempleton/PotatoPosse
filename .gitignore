@@ -143,3 +143,11 @@ SensorVideoRecorder/res/layout/row.xml
 *.markers
 *.prefs
 *.xmi
+*.dex
+*.class
+*.apk
+PotatoPosse/bin/R.txt
+*.ap_
+PotatoPosse/gen/com/example/potatoposse/R.java
+PotatoPosse/gen/android/support/v7/appcompat/R.java
+*.class
