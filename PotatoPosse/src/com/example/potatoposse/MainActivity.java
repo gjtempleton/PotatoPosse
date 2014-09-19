@@ -7,6 +7,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TabHost;
 
 
@@ -15,6 +17,10 @@ public class MainActivity extends TabActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        
         setContentView(R.layout.activity_main);
         
         Resources res = getResources();
@@ -24,32 +30,23 @@ public class MainActivity extends TabActivity {
 
 	    // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomList.class);
-	    intent.putExtra("TYPE", "PLANT");
-
+	    intent.putExtra("TYPE", "LEAF");
 	    // Initialize a TabSpec for each tab and add it to the TabHost
-	    spec = tabHost.newTabSpec("Plant").setIndicator("Plant",
-	                      res.getDrawable(R.drawable.ic_tab_summary))
-	                  .setContent(intent);
+	    spec = tabHost.newTabSpec("Leaf").setIndicator("Leaf", res.getDrawable(R.drawable.ic_tab_summary)).setContent(intent);
 	    tabHost.addTab(spec);
 	    
-	 // Create an Intent to launch an Activity for the tab (to be reused)
+	    // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomList.class);
-	    intent.putExtra("TYPE", "INSECT");
-
+	    intent.putExtra("TYPE", "PEST");
 	    // Initialize a TabSpec for each tab and add it to the TabHost
-	    spec = tabHost.newTabSpec("Insect").setIndicator("Insect",
-	                      res.getDrawable(R.drawable.ic_tab_volume))
-	                  .setContent(intent);
+	    spec = tabHost.newTabSpec("Pest").setIndicator("Pest", res.getDrawable(R.drawable.ic_tab_volume)).setContent(intent);
 	    tabHost.addTab(spec);
 	    
 		 // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomList.class);
 	    intent.putExtra("TYPE", "TUBER");
-
 	    // Initialize a TabSpec for each tab and add it to the TabHost
-	    spec = tabHost.newTabSpec("Tuber").setIndicator("Tuber",
-	                      res.getDrawable(R.drawable.ic_tab_alerts))
-	                  .setContent(intent);
+	    spec = tabHost.newTabSpec("Tuber").setIndicator("Tuber", res.getDrawable(R.drawable.ic_tab_alerts)).setContent(intent);
 	    tabHost.addTab(spec);
 
 	    tabHost.setCurrentTab(0);
