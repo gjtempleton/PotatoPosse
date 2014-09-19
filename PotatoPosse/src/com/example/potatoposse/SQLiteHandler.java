@@ -40,29 +40,20 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 		db.execSQL(CREATE_SYMPTOM_TABLE);
 
 		//Populate the symptoms table with dummy data
-<<<<<<< HEAD
-		String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('LEAF', 'TEST LEAF', 'THIS IS A TEST LEAF', 'VISUAL')";
-=======
-		String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('PLANT', 'TEST PLANT', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
 
->>>>>>> origin/master
+		String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('LEAF', 'TEST LEAF', 'THIS IS A TEST LEAF', 'VISUAL')";
 		db.execSQL(INSERT_DUMMY_DATA);
 		
 		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('PEST', 'TEST PEST', 'THIS IS A TEST PEST', 'VISUAL')";
 		db.execSQL(INSERT_DUMMY_DATA);
 		
-<<<<<<< HEAD
 		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER', 'THIS IS A TEST TUBER', 'VISUAL')";
-=======
-		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
-		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER 23', 'THIS IS A TEST INSECT, IT WILL EAT ALL OF YOUR CROPS', 'VISUAL')";
-
->>>>>>> origin/master
 		db.execSQL(INSERT_DUMMY_DATA);
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
+	{
 		// Drop older symptoms table if existed
 		db.execSQL("DROP TABLE IF EXISTS symptoms");
 
@@ -70,15 +61,15 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 		this.onCreate(db);
 	}
 
-	public String[][]  getSymptoms(String type){
-
+	public String[][]  getSymptoms(String type)
+	{
 		String Table_Name="symptoms";
 
 		String selectQuery = "SELECT * FROM  "+ Table_Name + " WHERE category='"+type+"'";
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		String[][] data = new String[cursor.getCount()][4];
-		int j  =0;
+		int j = 0;
 		if (cursor.moveToFirst()) {
 			do {
 				data[j][0] = cursor.getString(0);
@@ -117,5 +108,4 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 		db.close();
 		return result;	
 	}
-
 }
