@@ -6,7 +6,6 @@ import java.io.Serializable;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -54,7 +53,9 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 		db.execSQL(INSERT_DUMMY_DATA);
 		
 		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER', 'THIS IS A TEST TUBER', 'VISUAL')";
+		String INSERT_DUMMY_DATA_2 = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER NO 2', 'THIS IS A TEST TUBER', 'VISUAL')";
 		db.execSQL(INSERT_DUMMY_DATA);
+		db.execSQL(INSERT_DUMMY_DATA_2);
 	}
 
 	@Override
@@ -67,22 +68,19 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 		this.onCreate(db);
 	}
 
-	public String[][]  getSymptoms(String type)
+	public String[]  getSymptoms(String type)
 	{
 		String Table_Name="symptoms";
 
-		String selectQuery = "SELECT * FROM  "+ Table_Name + " WHERE category='"+type+"'";
+		String selectQuery = "SELECT name FROM  "+ Table_Name + " WHERE category='"+type+"'";
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
-		String[][] data = new String[cursor.getCount()][4];
+		String[] data = new String[cursor.getCount()];
 		int j = 0;
 		if (cursor.moveToFirst()) {
 			do {
-				data[j][0] = cursor.getString(0);
-				data[j][1] = cursor.getString(1);
-				data[j][2] = cursor.getString(2);
-				data[j][3] = cursor.getString(3);
-				Log.w("Column Names", data[j].toString());
+				data[j] = cursor.getString(0);
+				j++;
 				// get  the  data into array,or class variable
 
 			} while (cursor.moveToNext());
@@ -107,7 +105,7 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 			do {
 				ByteArrayInputStream inputStream = new ByteArrayInputStream(cursor.getBlob(0));
 				Bitmap b = BitmapFactory.decodeStream(inputStream);
-				result[0] = b;
+				result[i] = b;
 				i++;
 			} while (cursor.moveToNext());
 		}

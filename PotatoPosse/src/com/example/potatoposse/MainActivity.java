@@ -1,7 +1,5 @@
 package com.example.potatoposse;
 
-import android.support.v4.content.IntentCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;

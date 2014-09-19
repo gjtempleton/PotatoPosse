@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.opengl.Visibility;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,7 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class SymptomList extends ListActivity{
-	String[][]response = null;
+	String[]response = null;
 	SQLiteHandler mySQLiteHandler;
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -29,15 +30,16 @@ public class SymptomList extends ListActivity{
 		mySQLiteHandler = (SQLiteHandler) getIntent().getSerializableExtra("SQLITEHANDLER");
 		if(type!=null){
 			response = mySQLiteHandler.getSymptoms(type);
+			Log.w("Crap", response.toString());
 			setListAdapter(new ThumbnailAdapter(this, R.layout.row, response));			
 		}
 	}
 	
 	//Array adapter to create list asynchronously and update it
 		//Needed as thumbnail creation is slow 
-		public class ThumbnailAdapter extends ArrayAdapter<String[]>{
+		public class ThumbnailAdapter extends ArrayAdapter<String>{
 
-			public ThumbnailAdapter(Context context, int textViewResourceId, String[][] symptoms) {
+			public ThumbnailAdapter(Context context, int textViewResourceId, String[] symptoms) {
 				super(context, textViewResourceId, symptoms);
 			}
 
@@ -50,11 +52,11 @@ public class SymptomList extends ListActivity{
 					row=inflater.inflate(R.layout.row, parent, false);
 				}
 				final TextView textfilePath = (TextView)row.findViewById(R.id.FilePath);
-				textfilePath.setText(response[position][1]);
+				textfilePath.setText(response[position]);
 				ImageView imageThumbnail = (ImageView)row.findViewById(R.id.Thumbnail);
 				//imageThumbnail = (ImageView)findViewById(drawable.ic_tab_alerts_off);
 				//imageThumbnail.setVisibility(View.VISIBLE);
-				final String symptomName = response[position][1];
+				final String symptomName = response[position];
 				row.setOnClickListener(new OnClickListener() {
 					
 					@Override
