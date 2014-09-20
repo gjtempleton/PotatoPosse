@@ -30,13 +30,11 @@ public class MainActivity extends TabActivity
         
         setContentView(R.layout.activity_main);
         
-        Resources res = getResources();
-        final TabHost tabHost = getTabHost();
-	    Intent intent;  // Reusable Intent for each tab
-	    SQLiteHandler mySQLiteHandler = new SQLiteHandler(getApplicationContext());	   
+	    SQLiteHandler mySQLiteHandler = new SQLiteHandler(getApplicationContext());	 
+	    final TabHost tabHost = getTabHost();
 	   	    
 	    // Create an Intent to launch an Activity for the tab (to be reused)
-	    intent = new Intent().setClass(this, SymptomList.class);
+	    Intent intent = new Intent().setClass(this, SymptomList.class);
 	    intent.putExtra("TYPE", "LEAF");
 	    intent.putExtra("SQLITEHANDLER", mySQLiteHandler);
 	    // Initialize a TabSpec for each tab and add it to the TabHost
@@ -104,25 +102,25 @@ public class MainActivity extends TabActivity
     	}
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) 
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) 
-    {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) 
-        {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) 
+//    {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) 
+//    {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//        if (id == R.id.action_settings) 
+//        {
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 }
