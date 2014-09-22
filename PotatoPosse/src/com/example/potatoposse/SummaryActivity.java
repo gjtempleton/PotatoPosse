@@ -36,7 +36,7 @@ public class SummaryActivity extends Activity{
 		String search = getIntent().getExtras().getString("SYMPTOM_NAME");
 		
 		String[] response = null;
-		SQLiteHandler mySQLiteHandler = new SQLiteHandler(getBaseContext(), false);
+		SQLiteHandler mySQLiteHandler = new SQLiteHandler(getBaseContext());
 		
 		if (search != null)
 		{

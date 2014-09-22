@@ -15,19 +15,14 @@ import android.util.Log;
 
 public class SQLiteHandler extends SQLiteOpenHelper{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	// Database Version
 	private static final int DATABASE_VERSION = 1;
 	// Database Name
 	private static final String DATABASE_NAME = "PotatoDB";
 	private boolean firstTime =false;
 
-	public SQLiteHandler(Context context, boolean firstTime) {
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);  
-		this.firstTime = firstTime;
+	public SQLiteHandler(Context context) {
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
 	@Override
@@ -37,7 +32,6 @@ public class SQLiteHandler extends SQLiteOpenHelper{
 
 	@Override
 	public void onOpen(SQLiteDatabase db){
-		if(firstTime){
 			// SQL statement to create symptoms table
 			// Drop older symptoms table if existed
 			db.execSQL("DROP TABLE IF EXISTS symptoms");
@@ -45,23 +39,23 @@ public class SQLiteHandler extends SQLiteOpenHelper{
 					"category TEXT, "+
 					"name TEXT, "+
 					"description TEXT, "+
+					"response TEXT, "+
 					"test TEXT)";
 
 			// create symptoms table
 			db.execSQL(CREATE_SYMPTOM_TABLE);
 			//Populate the symptoms table with dummy data
 
-			String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('LEAF', 'TEST LEAF', 'THIS IS A TEST LEAF', 'VISUAL')";
+			String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('LEAF', 'TEST LEAF', 'THIS IS A TEST LEAF', 'THROW IT AWAY', 'VISUAL')";
 			db.execSQL(INSERT_DUMMY_DATA);
 
-			INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('PEST', 'TEST PEST', 'THIS IS A TEST PEST', 'VISUAL')";
+			INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('PEST', 'TEST PEST', 'THIS IS A TEST PEST', 'THROW IT AWAY', 'VISUAL')";
 			db.execSQL(INSERT_DUMMY_DATA);
 
-			INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER', 'THIS IS A TEST TUBER', 'VISUAL')";
-			String INSERT_DUMMY_DATA_2 = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER NO 2', 'THIS IS A TEST TUBER', 'VISUAL')";
+			INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER', 'THIS IS A TEST TUBER', 'THROW IT AWAY', 'VISUAL')";
+			String INSERT_DUMMY_DATA_2 = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER NO 2', 'THIS IS A TEST TUBER', 'THROW IT AWAY', 'VISUAL')";
 			db.execSQL(INSERT_DUMMY_DATA);
 			db.execSQL(INSERT_DUMMY_DATA_2);
-		}
 	}
 
 	@Override
@@ -108,11 +102,15 @@ public class SQLiteHandler extends SQLiteOpenHelper{
 		Log.w("QUERY STRING", selectQuery);
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
-		String[] data = new String[cursor.getCount()];
+		String[] data = new String[cursor.getColumnCount()];
 		int j = 0;
 		if (cursor.moveToFirst()) {
 			do {
-				data[j] = cursor.getString(0);
+				data[0] = cursor.getString(0);
+				data[1] = cursor.getString(1);
+				data[2] = cursor.getString(2);
+				data[3] = cursor.getString(3);
+				data[4] = cursor.getString(4);			
 				j++;
 				// get  the  data into array,or class variable
 

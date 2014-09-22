@@ -32,7 +32,7 @@ public class SymptomList extends ListActivity{
 		summaryView = new Intent(getApplicationContext(), SummaryActivity.class);
 		
 		String type = getIntent().getExtras().getString("TYPE");
-		mySQLiteHandler = new SQLiteHandler(getBaseContext(), false);
+		mySQLiteHandler = new SQLiteHandler(getBaseContext());
 		if(type!=null){
 			response = mySQLiteHandler.getSymptoms(type);
 			//Log.w("Crap", response.toString());

@@ -30,7 +30,7 @@ public class MainActivity extends TabActivity
         
         setContentView(R.layout.activity_main);
         
-	    SQLiteHandler mySQLiteHandler = new SQLiteHandler(getApplicationContext(), true);	 
+	    SQLiteHandler mySQLiteHandler = new SQLiteHandler(getApplicationContext());	 
 	    final TabHost tabHost = getTabHost();
 	   	    
 	    // Create an Intent to launch an Activity for the tab (to be reused)
