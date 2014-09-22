@@ -9,9 +9,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
-public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
+public class SQLiteHandler extends SQLiteOpenHelper{
 
 	/**
 	 * 
@@ -21,41 +23,45 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 	private static final int DATABASE_VERSION = 1;
 	// Database Name
 	private static final String DATABASE_NAME = "PotatoDB";
+	private boolean firstTime =false;
 
-	public SQLiteHandler(Context context) {
+	public SQLiteHandler(Context context, boolean firstTime) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);  
+		this.firstTime = firstTime;
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		
+
 	}
-	
+
 	@Override
 	public void onOpen(SQLiteDatabase db){
-		// SQL statement to create symptoms table
-				// Drop older symptoms table if existed
-				db.execSQL("DROP TABLE IF EXISTS symptoms");
-				String CREATE_SYMPTOM_TABLE = "CREATE TABLE symptoms ( " +
-						"category TEXT, "+
-						"name TEXT, "+
-						"description TEXT, "+
-						"test TEXT)";
+		if(firstTime){
+			// SQL statement to create symptoms table
+			// Drop older symptoms table if existed
+			db.execSQL("DROP TABLE IF EXISTS symptoms");
+			String CREATE_SYMPTOM_TABLE = "CREATE TABLE symptoms ( " +
+					"category TEXT, "+
+					"name TEXT, "+
+					"description TEXT, "+
+					"test TEXT)";
 
-				// create symptoms table
-				db.execSQL(CREATE_SYMPTOM_TABLE);
-		//Populate the symptoms table with dummy data
+			// create symptoms table
+			db.execSQL(CREATE_SYMPTOM_TABLE);
+			//Populate the symptoms table with dummy data
 
-		String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('LEAF', 'TEST LEAF', 'THIS IS A TEST LEAF', 'VISUAL')";
-		db.execSQL(INSERT_DUMMY_DATA);
-		
-		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('PEST', 'TEST PEST', 'THIS IS A TEST PEST', 'VISUAL')";
-		db.execSQL(INSERT_DUMMY_DATA);
-		
-		INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER', 'THIS IS A TEST TUBER', 'VISUAL')";
-		String INSERT_DUMMY_DATA_2 = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER NO 2', 'THIS IS A TEST TUBER', 'VISUAL')";
-		db.execSQL(INSERT_DUMMY_DATA);
-		db.execSQL(INSERT_DUMMY_DATA_2);
+			String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('LEAF', 'TEST LEAF', 'THIS IS A TEST LEAF', 'VISUAL')";
+			db.execSQL(INSERT_DUMMY_DATA);
+
+			INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('PEST', 'TEST PEST', 'THIS IS A TEST PEST', 'VISUAL')";
+			db.execSQL(INSERT_DUMMY_DATA);
+
+			INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER', 'THIS IS A TEST TUBER', 'VISUAL')";
+			String INSERT_DUMMY_DATA_2 = "INSERT INTO symptoms VALUES ('TUBER', 'TEST TUBER NO 2', 'THIS IS A TEST TUBER', 'VISUAL')";
+			db.execSQL(INSERT_DUMMY_DATA);
+			db.execSQL(INSERT_DUMMY_DATA_2);
+		}
 	}
 
 	@Override
@@ -93,7 +99,7 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 		}
 		return data;
 	}
-	
+
 	public String[] getBreakdown(String name)
 	{
 		String Table_Name="symptoms";

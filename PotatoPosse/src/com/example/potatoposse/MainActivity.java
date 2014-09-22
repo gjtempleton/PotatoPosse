@@ -30,13 +30,12 @@ public class MainActivity extends TabActivity
         
         setContentView(R.layout.activity_main);
         
-	    SQLiteHandler mySQLiteHandler = new SQLiteHandler(getApplicationContext());	 
+	    SQLiteHandler mySQLiteHandler = new SQLiteHandler(getApplicationContext(), true);	 
 	    final TabHost tabHost = getTabHost();
 	   	    
 	    // Create an Intent to launch an Activity for the tab (to be reused)
 	    Intent intent = new Intent().setClass(this, SymptomList.class);
 	    intent.putExtra("TYPE", "LEAF");
-	    intent.putExtra("SQLITEHANDLER", mySQLiteHandler);
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    tabHost.addTab(tabHost.newTabSpec("LEAF").setIndicator("LEAF").setContent(intent));
 	    
@@ -44,7 +43,6 @@ public class MainActivity extends TabActivity
 	    intent = new Intent().setClass(this, SymptomList.class);
 	    intent.removeExtra("TYPE");
 	    intent.putExtra("TYPE", "PEST");
-	    intent.putExtra("SQLITEHANDLER", mySQLiteHandler);
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    tabHost.addTab(tabHost.newTabSpec("PEST").setIndicator("PEST").setContent(intent));
 	    
@@ -52,7 +50,6 @@ public class MainActivity extends TabActivity
 	    intent = new Intent().setClass(this, SymptomList.class);
 	    intent.removeExtra("TYPE");
 	    intent.putExtra("TYPE", "TUBER");
-	    intent.putExtra("SQLITEHANDLER", mySQLiteHandler);
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    tabHost.addTab(tabHost.newTabSpec("TUBER").setIndicator("TUBER").setContent(intent));
 	    

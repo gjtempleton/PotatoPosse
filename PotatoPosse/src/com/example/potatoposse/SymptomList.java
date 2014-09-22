@@ -32,10 +32,9 @@ public class SymptomList extends ListActivity{
 		summaryView = new Intent(getApplicationContext(), SummaryActivity.class);
 		
 		String type = getIntent().getExtras().getString("TYPE");
-		mySQLiteHandler = (SQLiteHandler) getIntent().getSerializableExtra("SQLITEHANDLER");
+		mySQLiteHandler = new SQLiteHandler(getBaseContext(), false);
 		if(type!=null){
 			response = mySQLiteHandler.getSymptoms(type);
-			summaryView.putExtra("SQLITEHANDLER", mySQLiteHandler);
 			//Log.w("Crap", response.toString());
 			setListAdapter(new ThumbnailAdapter(this, R.layout.row, response));			
 		}
