@@ -93,6 +93,33 @@ public class SQLiteHandler extends SQLiteOpenHelper implements Serializable{
 		}
 		return data;
 	}
+	
+	public String[] getBreakdown(String name)
+	{
+		String Table_Name="symptoms";
+
+		String selectQuery = "SELECT * FROM  "+ Table_Name + " WHERE name='"+name+"'";
+		Log.w("QUERY STRING", selectQuery);
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+		String[] data = new String[cursor.getCount()];
+		int j = 0;
+		if (cursor.moveToFirst()) {
+			do {
+				data[j] = cursor.getString(0);
+				j++;
+				// get  the  data into array,or class variable
+
+			} while (cursor.moveToNext());
+		}
+		db.close();
+		if(data!=null){
+			for(int i =0; i<data.length; i++){
+				Log.w("Data", data[i].toString());
+			}
+		}
+		return data;
+	}
 
 	public Bitmap[] getImages(String symptomName){
 		Bitmap[] result;

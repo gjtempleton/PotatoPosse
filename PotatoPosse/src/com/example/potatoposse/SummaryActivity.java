@@ -1,5 +1,7 @@
 package com.example.potatoposse;
 
+import com.example.potatoposse.SymptomList.ThumbnailAdapter;
+
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -20,17 +22,33 @@ public class SummaryActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
+
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
 		setContentView(R.layout.summary);
+		
+		//TODO: THIS AIN'T WORKING
+//		Bundle temp = getIntent().getExtras();
+//		Log.w("WHEEEE", temp.toString());
+		
+		//get name of symptom from intent
+		String search = getIntent().getExtras().getString("SYMPTOM_NAME");
+		
+		String[] response = null;
+		SQLiteHandler mySQLiteHandler = (SQLiteHandler)getIntent().getSerializableExtra("SQLITEHANDLER");
+		
+		if (search != null)
+		{
+			response = mySQLiteHandler.getBreakdown(search);
+			Log.w("RESPONSE_STRING", response.toString());
+			//setListAdapter(new ThumbnailAdapter(this, R.layout.row, response));			
+		}
 	
 		TableLayout layout = (TableLayout)this.findViewById(R.id.summaryLayout);
 		
-		//TableRow row = new TableRow(this);
 		TextView name = new TextView(this);
-		name.setText("NAME OF DISEASE");		
+		name.setText(search);		
 		layout.addView(name);
 		
 		ImageView image = new ImageView(this);

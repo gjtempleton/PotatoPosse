@@ -23,14 +23,20 @@ import android.widget.TextView;
 public class SymptomList extends ListActivity{
 	String[]response = null;
 	SQLiteHandler mySQLiteHandler;
+	Intent summaryView;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+
+		summaryView = new Intent(getApplicationContext(), SummaryActivity.class);
+		
 		String type = getIntent().getExtras().getString("TYPE");
 		mySQLiteHandler = (SQLiteHandler) getIntent().getSerializableExtra("SQLITEHANDLER");
 		if(type!=null){
 			response = mySQLiteHandler.getSymptoms(type);
-			Log.w("Crap", response.toString());
+			summaryView.putExtra("SQLITEHANDLER", mySQLiteHandler);
+			//Log.w("Crap", response.toString());
 			setListAdapter(new ThumbnailAdapter(this, R.layout.row, response));			
 		}
 	}
@@ -62,7 +68,6 @@ public class SymptomList extends ListActivity{
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						Intent summaryView = new Intent(getApplicationContext(), SummaryActivity.class);
 						summaryView.putExtra("SYMPTOM_NAME", symptomName);
 						startActivity(summaryView);
 						
