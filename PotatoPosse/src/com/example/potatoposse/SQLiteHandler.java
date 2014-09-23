@@ -1,7 +1,6 @@
 package com.example.potatoposse;
 
 import java.io.ByteArrayInputStream;
-import java.io.Serializable;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,8 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
 public class SQLiteHandler extends SQLiteOpenHelper{
@@ -19,7 +16,6 @@ public class SQLiteHandler extends SQLiteOpenHelper{
 	private static final int DATABASE_VERSION = 1;
 	// Database Name
 	private static final String DATABASE_NAME = "PotatoDB";
-	private boolean firstTime =false;
 
 	public SQLiteHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -61,17 +57,13 @@ public class SQLiteHandler extends SQLiteOpenHelper{
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
 	{
-		// Drop older symptoms table if existed
 		db.execSQL("DROP TABLE IF EXISTS symptoms");
-
-		// create fresh symptoms table
 		this.onCreate(db);
 	}
 
 	public String[]  getSymptoms(String type)
 	{
 		String Table_Name="symptoms";
-
 		String selectQuery = "SELECT name FROM  "+ Table_Name + " WHERE category='"+type+"'";
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
@@ -81,16 +73,9 @@ public class SQLiteHandler extends SQLiteOpenHelper{
 			do {
 				data[j] = cursor.getString(0);
 				j++;
-				// get  the  data into array,or class variable
-
 			} while (cursor.moveToNext());
 		}
 		db.close();
-		if(data!=null){
-			for(int i =0; i<data.length; i++){
-				Log.w("Data", data[i].toString());
-			}
-		}
 		return data;
 	}
 
@@ -103,25 +88,16 @@ public class SQLiteHandler extends SQLiteOpenHelper{
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		String[] data = new String[cursor.getColumnCount()];
-		int j = 0;
 		if (cursor.moveToFirst()) {
 			do {
 				data[0] = cursor.getString(0);
 				data[1] = cursor.getString(1);
 				data[2] = cursor.getString(2);
 				data[3] = cursor.getString(3);
-				data[4] = cursor.getString(4);			
-				j++;
-				// get  the  data into array,or class variable
-
+				data[4] = cursor.getString(4);
 			} while (cursor.moveToNext());
 		}
 		db.close();
-		if(data!=null){
-			for(int i =0; i<data.length; i++){
-				Log.w("Data", data[i].toString());
-			}
-		}
 		return data;
 	}
 
