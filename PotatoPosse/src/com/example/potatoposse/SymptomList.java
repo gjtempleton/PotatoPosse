@@ -1,10 +1,5 @@
 package com.example.potatoposse;
 
-import java.io.File;
-
-import com.example.potatoposse.R.drawable;
-
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +10,8 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+
 import android.widget.TextView;
 
 public class SymptomList extends ListActivity
@@ -40,9 +38,10 @@ public class SymptomList extends ListActivity
 		summaryView = new Intent(getApplicationContext(), SummaryActivity.class);
 		
 		String type = getIntent().getExtras().getString("TYPE");
+
 		mySQLiteHandler = new SQLiteHandler(getBaseContext());
 		
-		if (type!=null)
+ 		if(type != null)
 		{
 			response = mySQLiteHandler.getSymptoms(type);
 			setListAdapter(new ThumbnailAdapter(this, R.layout.row, response));			
@@ -62,10 +61,10 @@ public class SymptomList extends ListActivity
 		public View getView(int position, View convertView, ViewGroup parent) 
 		{
 			View row = convertView;
-			if (row == null)
+			if(row == null)
 			{
 				LayoutInflater inflater=getLayoutInflater();
-				row = inflater.inflate(R.layout.row, parent, false);
+				row=inflater.inflate(R.layout.row, parent, false);
 			}
 			
 			final String symptomName = response[position];

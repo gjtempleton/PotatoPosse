@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 public class SummaryActivity extends Activity{	

@@ -14,6 +14,7 @@ public class SQLiteHandler extends SQLiteOpenHelper
 {
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "PotatoDB";
+	
 	private boolean firstTime = false;
 
 	public SQLiteHandler(Context context) 
@@ -61,17 +62,13 @@ public class SQLiteHandler extends SQLiteOpenHelper
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
 	{
-		// Drop older symptoms table if existed
 		db.execSQL("DROP TABLE IF EXISTS symptoms");
-
-		// create fresh symptoms table
 		this.onCreate(db);
 	}
 
 	public String[]  getSymptoms(String type)
 	{
 		String Table_Name="symptoms";
-
 		String selectQuery = "SELECT name FROM  "+ Table_Name + " WHERE category='"+type+"'";
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
@@ -89,15 +86,8 @@ public class SQLiteHandler extends SQLiteOpenHelper
 			} 
 			while (cursor.moveToNext());
 		}
-		db.close();
 		
-		if (data != null)
-		{
-			for(int i = 0; i < data.length; i++)
-			{
-				Log.w("Data", data[i].toString());
-			}
-		}
+		db.close();
 		return data;
 	}
 
@@ -111,12 +101,11 @@ public class SQLiteHandler extends SQLiteOpenHelper
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		String[] data = new String[cursor.getColumnCount()];
+
 		int j = 0;
 		
-		if (cursor.moveToFirst()) 
-		{
-			do 
-			{
+		if (cursor.moveToFirst()) {
+			do {
 				data[0] = cursor.getString(0);
 				data[1] = cursor.getString(1);
 				data[2] = cursor.getString(2);
@@ -130,20 +119,20 @@ public class SQLiteHandler extends SQLiteOpenHelper
 		}
 		db.close();
 		
-		if (data != null)
-		{
-			for(int i =0; i<data.length; i++){
-				Log.w("Data", data[i].toString());
-			}
-		}
 		return data;
 	}
 
-	public Bitmap[] getImages(String symptomName)
-	{
+	public Bitmap[] getImages(String symptomName, boolean all){
 		Bitmap[] result;
 		SQLiteDatabase db = this.getReadableDatabase();
-		String query = "SELECT * FROM IMAGES WHERE SYMPTOM = " + symptomName;
+		String selection;
+		if(all){
+			selection = "*";
+		}
+		else{
+			selection = "image1";
+		}
+		String query = "SELECT " + selection + " FROM IMAGES WHERE SYMPTOM = " + symptomName;
 		Cursor cursor = db.rawQuery(query, null);
 		result = new Bitmap[cursor.getCount()];
 		int i =0;
