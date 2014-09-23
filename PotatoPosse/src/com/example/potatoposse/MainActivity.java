@@ -30,7 +30,7 @@ public class MainActivity extends TabActivity
         
         setContentView(R.layout.activity_main);
         
-	    SQLiteHandler mySQLiteHandler = new SQLiteHandler(getApplicationContext());	 
+	    //SQLiteHandler mySQLiteHandler = new SQLiteHandler(getApplicationContext());	 
 	    final TabHost tabHost = getTabHost();
 	   	    
 	    // Create an Intent to launch an Activity for the tab (to be reused)
@@ -66,29 +66,24 @@ public class MainActivity extends TabActivity
     }
     
     private void setTabColors(TabHost tabHost)
-    {
+    {    	
     	Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
     	
     	for (int i=0; i<tabHost.getTabWidget().getTabCount(); i++)
     	{
 			TextView tv = (TextView)tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
-	        LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			tv.setTypeface(font);
+			LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 	        params.setMargins(0, 20, 0, 20);
 	        tv.setLayoutParams(params);
 		    tv.setTextSize(30);
 		    tv.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-		    tv.setTypeface(font);
 		    
-		    if (i == 0) 
-		    	tv.setText(getString(R.string.ic_leaf));
-		    else if (i == 1)
-		    	tv.setText(getString(R.string.ic_pest));
-		    else if (i == 2) 
-		    	tv.setText(getString(R.string.ic_tuber));
+		    tv.setText(getString(FontHelper.getIcon(i)));
 			
     		if (tabHost.getTabWidget().getChildAt(i).isSelected()) //if this tab is currently selected
     		{
-    			tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.rgb(51,181,229));
+    			tabHost.getTabWidget().getChildAt(i).setBackgroundColor(this.getResources().getColor(R.color.jh_blue));
     			tv.setTextColor(Color.WHITE);
     		}
     		else //this tab is NOT currently selected
