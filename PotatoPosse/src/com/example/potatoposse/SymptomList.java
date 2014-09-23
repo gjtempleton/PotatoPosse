@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,7 @@ import android.widget.TextView;
 
 public class SymptomList extends ListActivity{
 	String[]response = null;
-	SQLiteHandler mySQLiteHandler;
+	SQLiteHandler mySQLiteHandler = new SQLiteHandler(getBaseContext());;
 	Intent summaryView;
 	
 	@Override
@@ -32,7 +33,6 @@ public class SymptomList extends ListActivity{
 		summaryView = new Intent(getApplicationContext(), SummaryActivity.class);
 		
 		String type = getIntent().getExtras().getString("TYPE");
-		mySQLiteHandler = new SQLiteHandler(getBaseContext());
 		if(type!=null){
 			response = mySQLiteHandler.getSymptoms(type);
 			//Log.w("Crap", response.toString());
@@ -56,12 +56,16 @@ public class SymptomList extends ListActivity{
 					LayoutInflater inflater=getLayoutInflater();
 					row=inflater.inflate(R.layout.row, parent, false);
 				}
+				
 				final TextView textfilePath = (TextView)row.findViewById(R.id.FilePath);
 				textfilePath.setText(response[position]);
 				ImageView imageThumbnail = (ImageView)row.findViewById(R.id.Thumbnail);
 				//imageThumbnail = (ImageView)findViewById(drawable.ic_tab_alerts_off);
 				//imageThumbnail.setVisibility(View.VISIBLE);
 				final String symptomName = response[position];
+				Bitmap[] image = mySQLiteHandler.getImages(symptomName, false);
+				//TODO test this works
+				//imageThumbnail.setImageBitmap(image[0]);
 				row.setOnClickListener(new OnClickListener() {
 					
 					@Override

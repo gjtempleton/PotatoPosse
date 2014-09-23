@@ -125,10 +125,17 @@ public class SQLiteHandler extends SQLiteOpenHelper{
 		return data;
 	}
 
-	public Bitmap[] getImages(String symptomName){
+	public Bitmap[] getImages(String symptomName, boolean all){
 		Bitmap[] result;
 		SQLiteDatabase db = this.getReadableDatabase();
-		String query = "SELECT * FROM IMAGES WHERE SYMPTOM = " + symptomName;
+		String selection;
+		if(all){
+			selection = "*";
+		}
+		else{
+			selection = "image1";
+		}
+		String query = "SELECT " + selection + " FROM IMAGES WHERE SYMPTOM = " + symptomName;
 		Cursor cursor = db.rawQuery(query, null);
 		result = new Bitmap[cursor.getCount()];
 		int i =0;
