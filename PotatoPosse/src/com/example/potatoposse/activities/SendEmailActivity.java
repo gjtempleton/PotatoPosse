@@ -1,40 +1,101 @@
-package com.example.potatoposse.utils;
+package com.example.potatoposse.activities;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.example.potatoposse.R;
+import com.example.potatoposse.utils.Contact;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
-public class SendEmail extends Activity {
+public class SendEmailActivity extends Activity {
     ListView listView ;
     EditText search;
+    Button newAddress;
     ArrayAdapter<String> adapter;
+    String img;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.send_email_layout);
+        img = getIntent().getExtras().getString("IMAGE");
+        
+        setContentView(R.layout.activity_send_email);
         
         search = (EditText) findViewById(R.id.search);
         		
+        newAddress = (Button) findViewById (R.id.newAddress);
+      
+        newAddress.setOnClickListener( new OnClickListener(){
+        	public void onClick(View view){
+        		
+                final AlertDialog ad = new AlertDialog.Builder(SendEmailActivity.this).create();
+        		ad.setTitle("New Email Address");
+        		ad.setMessage("Please enter email address:");
+        		
+        		final EditText input = new EditText(SendEmailActivity.this);
+        		ad.setView(input);
+        		
+        		ad.setButton(DialogInterface.BUTTON_POSITIVE, "Enter",new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						String exp = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+						CharSequence email =  input.getText().toString();
+						
+						Pattern pat = Pattern.compile(exp, Pattern.CASE_INSENSITIVE);
+						Matcher mat = pat.matcher(email);	
+						
+						if(mat.matches()){
+							sendEmail("Friend",input.getText().toString());	
+							ad.dismiss();
+						}
+						else{
+							 Toast.makeText(SendEmailActivity.this, "Please enter a valid email address!", Toast.LENGTH_SHORT).show();
+						     
+						}
+						
+					}
+				});
+        		
+        		ad.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					
+					}
+				});
+        		
+        		ad.show();
+        	}
+        });
+        
+        
         // Get ListView object from xml
         listView = (ListView) findViewById(R.id.list);
         
@@ -84,18 +145,11 @@ public class SendEmail extends Activity {
             		}
             	 }
             	 
-      		  Intent email = new Intent(Intent.ACTION_SEND);
-			  email.putExtra(Intent.EXTRA_EMAIL, new String[]{ to});
-			  email.putExtra(Intent.EXTRA_SUBJECT, "Help identify this potato problem");
-			  email.putExtra(Intent.EXTRA_TEXT, "Dear "+(String) listView.getItemAtPosition(position)+ "\n\nPlease help!");
- 
-			  // we need setType to prompts only email clients.
-			  email.setType("message/rfc822");
- 
-			  startActivity(Intent.createChooser(email, "Choose an Email client :"));
+      		 sendEmail((String) listView.getItemAtPosition(position), to);
                 
               }
 
+              
          }); 
         
         search.addTextChangedListener(new TextWatcher() {
@@ -103,7 +157,7 @@ public class SendEmail extends Activity {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 // When user changed the Text
-               SendEmail.this.adapter.getFilter().filter(cs);   
+               SendEmailActivity.this.adapter.getFilter().filter(cs);   
             }
              
             @Override
@@ -120,11 +174,25 @@ public class SendEmail extends Activity {
         });
     }
 
-	public ArrayList<Contact> getNameEmailDetails() {
+    private void sendEmail(String to, String address){
+		  Intent email = new Intent(Intent.ACTION_SEND);
+		  email.putExtra(Intent.EXTRA_EMAIL, new String[]{ address});
+		  email.putExtra(Intent.EXTRA_SUBJECT, "Help identify this potato problem");
+		  email.putExtra(Intent.EXTRA_TEXT, "Dear "+to+ "\n\nPlease help!");
+	Log.e("img", img);	 
+		   email.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+img));
+
+		  // we need setType to prompts only email clients.
+		  email.setType("message/rfc822");
+
+		  startActivity(Intent.createChooser(email, "Choose an Email client :"));
+  }
+    
+	private ArrayList<Contact> getNameEmailDetails() {
 
 		ArrayList<Contact> contacts = new ArrayList<Contact>();
 	    HashSet<String> emlRecsHS = new HashSet<String>();
-	    Context context = SendEmail.this;
+	    Context context = SendEmailActivity.this;
 	    ContentResolver cr = context.getContentResolver();
 	    String[] PROJECTION = new String[] { ContactsContract.RawContacts._ID, 
 	            ContactsContract.Contacts.DISPLAY_NAME,
