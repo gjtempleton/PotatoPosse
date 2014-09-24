@@ -5,11 +5,14 @@ import com.example.potatoposse.utils.FontHelper;
 import com.example.potatoposse.utils.SQLiteHandler;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.View.OnClickListener;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -91,10 +94,22 @@ public class SummaryActivity extends Activity
 		description.setText(data[DESCRIPTION]);
 		inner.addView(description);
 		
+		final String testName = data[TEST];
+		
 		Button test = new Button(this);
 		test.setTypeface(font);
 		test.setPadding(0, 30, 0, 30);
 		test.setTextSize(18f);
+		test.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View v) 
+			{
+				Intent testActivity = new Intent(getApplicationContext(), TestActivity.class);
+				testActivity.putExtra("TEST_NAME", testName);
+				startActivity(testActivity);					
+			}
+		});
 		test.setText(data[TEST]);
 		inner.addView(test);
 		

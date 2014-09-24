@@ -22,20 +22,16 @@ import android.widget.TextView;
 
 public class SymptomListActivity extends ListActivity
 {
-	String[]response = null;
-	SQLiteHandler mySQLiteHandler;
-	Intent summaryView;
+	String[] response = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-
-		summaryView = new Intent(getApplicationContext(), SummaryActivity.class);
 		
 		String type = getIntent().getExtras().getString("TYPE");
 
-		mySQLiteHandler = new SQLiteHandler(getBaseContext());
+		SQLiteHandler mySQLiteHandler = new SQLiteHandler(getBaseContext());
 		
  		if(type != null)
 		{
@@ -89,6 +85,7 @@ public class SymptomListActivity extends ListActivity
 				@Override
 				public void onClick(View v) 
 				{
+					Intent summaryView = new Intent(getApplicationContext(), SummaryActivity.class);
 					summaryView.putExtra("SYMPTOM_NAME", symptomName);
 					startActivity(summaryView);					
 				}
