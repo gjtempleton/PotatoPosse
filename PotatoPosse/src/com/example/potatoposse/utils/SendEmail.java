@@ -1,7 +1,9 @@
-package com.example.potatoposse;
+package com.example.potatoposse.utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import com.example.potatoposse.R;
 
 
 import android.app.Activity;
@@ -36,13 +38,13 @@ public class SendEmail extends Activity {
         // Get ListView object from xml
         listView = (ListView) findViewById(R.id.list);
         
-        final ArrayList<contact> contacts = getNameEmailDetails();
+        final ArrayList<Contact> contacts = getNameEmailDetails();
       Log.e("GOT HERE", "GOT HERE");  
       
         // Defined Array values to show in ListView
         ArrayList<String> names = new ArrayList<String>();;
       
-         for (contact c : contacts){
+         for (Contact c : contacts){
         	 names.add(c.getName());
           }
       
@@ -73,7 +75,7 @@ public class SendEmail extends Activity {
             	  
             	  String to = "";
             	  
-            	 for(contact c : contacts) 
+            	 for(Contact c : contacts) 
             	 {
             		if((String) listView.getItemAtPosition(position) == c.getName())
             		{
@@ -118,9 +120,9 @@ public class SendEmail extends Activity {
         });
     }
 
-	public ArrayList<contact> getNameEmailDetails() {
+	public ArrayList<Contact> getNameEmailDetails() {
 
-		ArrayList<contact> contacts = new ArrayList<contact>();
+		ArrayList<Contact> contacts = new ArrayList<Contact>();
 	    HashSet<String> emlRecsHS = new HashSet<String>();
 	    Context context = SendEmail.this;
 	    ContentResolver cr = context.getContentResolver();
@@ -149,7 +151,7 @@ public class SendEmail extends Activity {
 	            
 	            // keep unique only
 	            if (emlRecsHS.add(emlAddr.toLowerCase())) {
-	                contact con = new contact();
+	                Contact con = new Contact();
 	                
 	                con.setEmail(emlAddr);
 	                con.setName(name);

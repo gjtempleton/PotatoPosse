@@ -1,6 +1,6 @@
-package com.example.potatoposse;
+package com.example.potatoposse.utils;
 
-public class contact {
+public class Contact {
 
 	private String name;
 	private String email;

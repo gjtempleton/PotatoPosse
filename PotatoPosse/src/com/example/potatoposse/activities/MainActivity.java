@@ -1,4 +1,7 @@
-package com.example.potatoposse;
+package com.example.potatoposse.activities;
+
+import com.example.potatoposse.R;
+import com.example.potatoposse.utils.FontHelper;
 
 import android.app.TabActivity;
 import android.content.Intent;
@@ -24,27 +27,22 @@ public class MainActivity extends TabActivity
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main);
+
 	    final TabHost tabHost = getTabHost();
-	   	    
-	    // Create an Intent to launch an Activity for the tab (to be reused)
-	    Intent intent = new Intent().setClass(this, SymptomList.class);
+	    
+	    Intent intent = new Intent().setClass(this, SymptomListActivity.class);
 	    intent.putExtra("TYPE", "LEAF");
-	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    tabHost.addTab(tabHost.newTabSpec("LEAF").setIndicator("LEAF").setContent(intent));
 	    
-	    // Create an Intent to launch an Activity for the tab (to be reused)
-	    intent = new Intent().setClass(this, SymptomList.class);
+	    intent = new Intent().setClass(this, SymptomListActivity.class);
 	    intent.removeExtra("TYPE");
 	    intent.putExtra("TYPE", "PEST");
-	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    tabHost.addTab(tabHost.newTabSpec("PEST").setIndicator("PEST").setContent(intent));
 	    
-		 // Create an Intent to launch an Activity for the tab (to be reused)
-	    intent = new Intent().setClass(this, SymptomList.class);
+	    intent = new Intent().setClass(this, SymptomListActivity.class);
 	    intent.removeExtra("TYPE");
 	    intent.putExtra("TYPE", "TUBER");
-	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    tabHost.addTab(tabHost.newTabSpec("TUBER").setIndicator("TUBER").setContent(intent));
 	    
 	    tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() 
@@ -60,29 +58,24 @@ public class MainActivity extends TabActivity
     }
     
     private void setTabColors(TabHost tabHost)
-    {
+    {    	
     	Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
     	
     	for (int i=0; i<tabHost.getTabWidget().getTabCount(); i++)
     	{
 			TextView tv = (TextView)tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
-	        LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			tv.setTypeface(font);
+			LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 	        params.setMargins(0, 20, 0, 20);
 	        tv.setLayoutParams(params);
 		    tv.setTextSize(30);
 		    tv.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-		    tv.setTypeface(font);
 		    
-		    if (i == 0) 
-		    	tv.setText(getString(R.string.ic_leaf));
-		    else if (i == 1)
-		    	tv.setText(getString(R.string.ic_pest));
-		    else if (i == 2) 
-		    	tv.setText(getString(R.string.ic_tuber));
+		    tv.setText(getString(FontHelper.getIcon(i)));
 			
-    		if (tabHost.getTabWidget().getChildAt(i).isSelected()) //if this tab is currently selected
+    		if (tabHost.getTabWidget().getChildAt(i).isSelected()) //this tab is currently selected
     		{
-    			tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.rgb(51,181,229));
+    			tabHost.getTabWidget().getChildAt(i).setBackgroundColor(this.getResources().getColor(R.color.jh_blue));
     			tv.setTextColor(Color.WHITE);
     		}
     		else //this tab is NOT currently selected
@@ -92,26 +85,4 @@ public class MainActivity extends TabActivity
     		}   		
     	}
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) 
-//    {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) 
-//    {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        if (id == R.id.action_settings) 
-//        {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 }
