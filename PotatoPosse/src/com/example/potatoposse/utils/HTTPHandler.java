@@ -1,4 +1,4 @@
-package com.example.potatoposse;
+package com.example.potatoposse.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

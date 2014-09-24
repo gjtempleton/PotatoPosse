@@ -1,4 +1,6 @@
-package com.example.potatoposse;
+package com.example.potatoposse.utils;
+
+import com.example.potatoposse.R;
 
 public class FontHelper 
 {

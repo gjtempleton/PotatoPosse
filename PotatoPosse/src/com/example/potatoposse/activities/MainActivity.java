@@ -1,4 +1,7 @@
-package com.example.potatoposse;
+package com.example.potatoposse.activities;
+
+import com.example.potatoposse.R;
+import com.example.potatoposse.utils.FontHelper;
 
 import android.app.TabActivity;
 import android.content.Intent;
@@ -24,25 +27,25 @@ public class MainActivity extends TabActivity
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main);
 
 	    final TabHost tabHost = getTabHost();
 	   	    
 	    // Create an Intent to launch an Activity for the tab (to be reused)
-	    Intent intent = new Intent().setClass(this, SymptomList.class);
+	    Intent intent = new Intent().setClass(this, SymptomListActivity.class);
 	    intent.putExtra("TYPE", "LEAF");
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    tabHost.addTab(tabHost.newTabSpec("LEAF").setIndicator("LEAF").setContent(intent));
 	    
 	    // Create an Intent to launch an Activity for the tab (to be reused)
-	    intent = new Intent().setClass(this, SymptomList.class);
+	    intent = new Intent().setClass(this, SymptomListActivity.class);
 	    intent.removeExtra("TYPE");
 	    intent.putExtra("TYPE", "PEST");
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    tabHost.addTab(tabHost.newTabSpec("PEST").setIndicator("PEST").setContent(intent));
 	    
 		 // Create an Intent to launch an Activity for the tab (to be reused)
-	    intent = new Intent().setClass(this, SymptomList.class);
+	    intent = new Intent().setClass(this, SymptomListActivity.class);
 	    intent.removeExtra("TYPE");
 	    intent.putExtra("TYPE", "TUBER");
 	    // Initialize a TabSpec for each tab and add it to the TabHost

@@ -1,4 +1,7 @@
-package com.example.potatoposse;
+package com.example.potatoposse.activities;
+
+import com.example.potatoposse.R;
+import com.example.potatoposse.utils.SQLiteHandler;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -24,7 +27,7 @@ import android.widget.ProgressBar;
 
 import android.widget.TextView;
 
-public class SymptomList extends ListActivity
+public class SymptomListActivity extends ListActivity
 {
 	String[]response = null;
 	SQLiteHandler mySQLiteHandler;

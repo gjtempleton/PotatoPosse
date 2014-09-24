@@ -1,4 +1,8 @@
-package com.example.potatoposse;
+package com.example.potatoposse.activities;
+
+import com.example.potatoposse.R;
+import com.example.potatoposse.utils.FontHelper;
+import com.example.potatoposse.utils.SQLiteHandler;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -20,7 +24,8 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-public class SummaryActivity extends Activity{	
+public class SummaryActivity extends Activity
+{	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -76,7 +81,7 @@ public class SummaryActivity extends Activity{
 		category.setGravity(Gravity.CENTER_HORIZONTAL);
 		category.setTextSize(18f);
 		String icon = getString(FontHelper.getIcon(data[CATEGORY]));
-		category.setText("Category: " + icon);
+		category.setText(data[CATEGORY] + " " + icon);
 		inner.addView(category);
 		
 		ImageView divider = new ImageView(this);
