@@ -4,5 +4,7 @@
     <string name="app_name">PotatoPosse</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_take_picture">TakePicture</string>
+    <string name="title_activity_photo_handler">PhotoHandler</string>
 
 </resources>
