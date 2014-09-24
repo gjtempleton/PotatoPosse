@@ -28,6 +28,11 @@ public class HTTPHandler {
 		        out.close();
 		        responseString = out.toString();
 			}
+			else{
+		        //Closes the connection.
+		        response.getEntity().getContent().close();
+		        throw new IOException(status.getReasonPhrase());
+		    }
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
