@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -46,11 +47,7 @@ public class SummaryActivity extends Activity{
 		DisplayMetrics displayMetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		
-		TableLayout layout = (TableLayout)this.findViewById(R.id.summaryLayout);
-		
-		ImageView divider = new ImageView(this);
-		divider.setImageResource(R.drawable.ruler);
-		divider.setPadding(20, 20, 20, 20);
+		TableLayout outer = (TableLayout)this.findViewById(R.id.summaryLayout);
 		
 		TextView name = new TextView(this);
 		name.setTypeface(font, Typeface.BOLD);	
@@ -59,44 +56,55 @@ public class SummaryActivity extends Activity{
 		name.setTextColor(Color.WHITE);
 		name.setTextSize(26f);
 		name.setText(data[NAME]);
-		layout.addView(name);
+		outer.addView(name);
 		
 		ImageView image = new ImageView(this);
 		image.setImageResource(R.drawable.potato);
 		image.setPadding(20, 20, 20, 20);
 		LayoutParams imageParams = new LayoutParams(displayMetrics.widthPixels, displayMetrics.widthPixels);
 		image.setLayoutParams(imageParams);
-		layout.addView(image);
+		outer.addView(image);
+		
+		ScrollView scroll = new ScrollView(this);
+		TableLayout inner = new TableLayout(this);
+		inner.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)); 
+		inner.setPadding(20, 20, 20, 20);
 		
 		TextView category = new TextView(this);
 		category.setTypeface(font);
-		category.setPadding(20, 20, 20, 20);
+		category.setPadding(0, 0, 0, 30);
+		category.setGravity(Gravity.CENTER_HORIZONTAL);
 		category.setTextSize(18f);
 		String icon = getString(FontHelper.getIcon(data[CATEGORY]));
 		category.setText("Category: " + icon);
-		layout.addView(category);
+		inner.addView(category);
 		
-		layout.addView(divider);
+		ImageView divider = new ImageView(this);
+		divider.setImageResource(R.drawable.ruler);
+		inner.addView(divider);
 		
 		TextView description = new TextView(this);
 		description.setTypeface(font);
-		description.setPadding(20, 20, 20, 20);
+		description.setPadding(0, 30, 0, 30);
 		description.setTextSize(18f);
 		description.setText(data[DESCRIPTION]);
-		layout.addView(description);
+		inner.addView(description);
 		
 		Button test = new Button(this);
 		test.setTypeface(font);
-		test.setPadding(20, 20, 20, 20);
+		test.setPadding(0, 30, 0, 30);
 		test.setTextSize(18f);
 		test.setText(data[TEST]);
-		layout.addView(test);
+		inner.addView(test);
 		
 		TextView response = new TextView(this);
 		response.setTypeface(font);
-		response.setPadding(20, 20, 20, 20);
+		response.setPadding(0, 30, 0, 30);
 		response.setTextSize(18f);
 		response.setText(data[RESPONSE]);
-		layout.addView(response);		
+		inner.addView(response);
+			
+		scroll.addView(inner);	
+		outer.addView(scroll);
 	}
 }
