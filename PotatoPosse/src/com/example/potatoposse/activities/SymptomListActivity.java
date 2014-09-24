@@ -6,24 +6,17 @@ import com.example.potatoposse.utils.SQLiteHandler;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
-import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import android.widget.TextView;
 
@@ -51,10 +44,10 @@ public class SymptomListActivity extends ListActivity
 		}
 	}
 	
-	//Array adapter to create list asynchronously and update it
-	//Needed as thumbnail creation is slow 
-	public class ThumbnailAdapter extends ArrayAdapter<String>{
-
+	//array adapter to create list asynchronously and update it
+	//needed as thumbnail creation is slow 
+	public class ThumbnailAdapter extends ArrayAdapter<String>
+	{
 		public ThumbnailAdapter(Context context, int textViewResourceId, String[] symptoms) 
 		{
 			super(context, textViewResourceId, symptoms);
@@ -64,15 +57,15 @@ public class SymptomListActivity extends ListActivity
 		public View getView(int position, View convertView, ViewGroup parent) 
 		{
 			View row = convertView;
-			if(row == null)
+			if (row == null)
 			{
-				LayoutInflater inflater=getLayoutInflater();
-				row=inflater.inflate(R.layout.row, parent, false);
+				LayoutInflater inflater = getLayoutInflater();
+				row = inflater.inflate(R.layout.row, parent, false);
 			}
 			
 			final String symptomName = response[position];
 			
-			final TextView label = (TextView)row.findViewById(R.id.FilePath);
+			final TextView label = (TextView)row.findViewById(R.id.label);
 			Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
 			label.setTypeface(font);
 			label.setTextSize(18f);	
@@ -84,7 +77,7 @@ public class SymptomListActivity extends ListActivity
 			label.setGravity(Gravity.RIGHT);
 			label.setText(symptomName);
 			
-			ImageView thumbnail = (ImageView)row.findViewById(R.id.Thumbnail);
+			ImageView thumbnail = (ImageView)row.findViewById(R.id.thumbnail);
 			thumbnail.setImageResource(R.drawable.potato);
 			thumbnail.setPadding(20, 20, 20, 20);
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);

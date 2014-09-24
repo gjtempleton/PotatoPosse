@@ -9,16 +9,11 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -35,10 +30,11 @@ public class SummaryActivity extends Activity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
 		setContentView(R.layout.summary);
+		
 		Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
 		
 		//get name of symptom from intent
-		String search = getIntent().getExtras().getString("SYMPTOM_NAME");
+		String search = getIntent().getExtras().getString("SYMPTOM_NAME");		
 		
 		String[] data = null;
 		int CATEGORY = 0, NAME = 1, DESCRIPTION = 2, TEST = 3, RESPONSE = 4;

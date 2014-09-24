@@ -30,25 +30,19 @@ public class MainActivity extends TabActivity
         setContentView(R.layout.main);
 
 	    final TabHost tabHost = getTabHost();
-	   	    
-	    // Create an Intent to launch an Activity for the tab (to be reused)
+	    
 	    Intent intent = new Intent().setClass(this, SymptomListActivity.class);
 	    intent.putExtra("TYPE", "LEAF");
-	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    tabHost.addTab(tabHost.newTabSpec("LEAF").setIndicator("LEAF").setContent(intent));
 	    
-	    // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomListActivity.class);
 	    intent.removeExtra("TYPE");
 	    intent.putExtra("TYPE", "PEST");
-	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    tabHost.addTab(tabHost.newTabSpec("PEST").setIndicator("PEST").setContent(intent));
 	    
-		 // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, SymptomListActivity.class);
 	    intent.removeExtra("TYPE");
 	    intent.putExtra("TYPE", "TUBER");
-	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    tabHost.addTab(tabHost.newTabSpec("TUBER").setIndicator("TUBER").setContent(intent));
 	    
 	    tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() 
@@ -79,7 +73,7 @@ public class MainActivity extends TabActivity
 		    
 		    tv.setText(getString(FontHelper.getIcon(i)));
 			
-    		if (tabHost.getTabWidget().getChildAt(i).isSelected()) //if this tab is currently selected
+    		if (tabHost.getTabWidget().getChildAt(i).isSelected()) //this tab is currently selected
     		{
     			tabHost.getTabWidget().getChildAt(i).setBackgroundColor(this.getResources().getColor(R.color.jh_blue));
     			tv.setTextColor(Color.WHITE);
@@ -91,26 +85,4 @@ public class MainActivity extends TabActivity
     		}   		
     	}
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) 
-//    {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) 
-//    {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        if (id == R.id.action_settings) 
-//        {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 }
