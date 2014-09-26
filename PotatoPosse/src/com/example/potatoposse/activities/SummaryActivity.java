@@ -3,12 +3,15 @@ package com.example.potatoposse.activities;
 import com.example.potatoposse.R;
 import com.example.potatoposse.utils.FontHelper;
 import com.example.potatoposse.utils.SQLiteHandler;
+import com.example.potatoposse.utils.ViewPagerAdapter;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View.OnClickListener;
@@ -68,6 +71,13 @@ public class SummaryActivity extends Activity
 		LayoutParams imageParams = new LayoutParams(displayMetrics.widthPixels, displayMetrics.widthPixels);
 		image.setLayoutParams(imageParams);
 		outer.addView(image);
+		
+//		int[] images = new int[]{ R.drawable.one, R.drawable.two, R.drawable.three };
+//		
+//		ViewPager pager = new ViewPager(this);
+//		PagerAdapter adapter = new ViewPagerAdapter(this, images, font);
+//		pager.setAdapter(adapter);
+//		outer.addView(pager);
 		
 		ScrollView scroll = new ScrollView(this);
 		TableLayout inner = new TableLayout(this);
