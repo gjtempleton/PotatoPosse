@@ -1,6 +1,7 @@
 package com.example.potatoposse.activities;
 
 import com.example.potatoposse.R;
+import com.example.potatoposse.utils.CirclePageIndicator;
 import com.example.potatoposse.utils.ViewPagerAdapter;
 
 import android.app.Activity;
@@ -9,10 +10,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -32,25 +31,34 @@ public class TestActivity extends Activity
         
         String testName = getIntent().getExtras().getString("TEST_NAME");
         
-        TableLayout layout = (TableLayout)findViewById(R.id.testLayout);
+        TableLayout upper = (TableLayout)findViewById(R.id.upper);
         
         TextView title = new TextView(this);
 		title.setTypeface(font, Typeface.BOLD);	
 		title.setPadding(20, 20, 20, 20);
 		title.setBackgroundColor(this.getResources().getColor(R.color.jh_green));
 		title.setTextColor(Color.WHITE);
-		title.setTextSize(26f);
+		title.setTextSize(20f);
 		title.setText(testName);
-		layout.addView(title);
+		upper.addView(title);
 		
 		int[] images = new int[]{ R.drawable.one, R.drawable.two, R.drawable.three };
 		
-		DisplayMetrics displayMetrics = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+		//DisplayMetrics displayMetrics = new DisplayMetrics();
+		//getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		
 		ViewPager pager = new ViewPager(this);
 		PagerAdapter adapter = new ViewPagerAdapter(this, images, font);
 		pager.setAdapter(adapter);
-		layout.addView(pager);
+		upper.addView(pager);
+		
+		TableLayout lower = (TableLayout)findViewById(R.id.lower);
+		
+		CirclePageIndicator circles = new CirclePageIndicator(this);
+		circles.setPadding(0, 0, 0, 20);
+		circles.setRadius(11f);
+		circles.setFillColor(this.getResources().getColor(R.color.jh_green));
+		circles.setViewPager(pager);
+		lower.addView(circles);
 	}
 }

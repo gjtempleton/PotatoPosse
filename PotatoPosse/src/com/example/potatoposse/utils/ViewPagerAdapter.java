@@ -6,19 +6,14 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TableLayout;
-import android.widget.TableLayout.LayoutParams;
-import android.widget.TextView;
  
 /**
- * @basedon http://www.androidbegin.com/tutorial/android-viewpager-gallery-images-and-texts-tutorial/
- *
+ * @original http://www.androidbegin.com/tutorial/android-viewpager-gallery-images-and-texts-tutorial/
  */
 public class ViewPagerAdapter extends PagerAdapter 
 {
@@ -55,13 +50,6 @@ public class ViewPagerAdapter extends PagerAdapter
         ImageView image = (ImageView)itemView.findViewById(R.id.image);
         image.setPadding(20, 20, 20, 20);
         image.setImageResource(images[position]);
-        
-        TextView counter = (TextView)itemView.findViewById(R.id.counter);
-        counter.setTypeface(font);
-        counter.setTextSize(20f);
-        counter.setGravity(Gravity.CENTER);
-        counter.setPadding(20, 20, 20, 20);
-        counter.setText(position+1 + "/" + getCount());
  
         ((ViewPager)container).addView(itemView);
  

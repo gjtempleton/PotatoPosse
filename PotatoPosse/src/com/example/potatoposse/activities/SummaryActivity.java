@@ -9,11 +9,11 @@ import com.example.potatoposse.utils.ViewPagerAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View.OnClickListener;
 import android.view.View;
@@ -40,7 +40,6 @@ public class SummaryActivity extends Activity
 		
 		Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
 		
-		//get name of symptom from intent
 		String search = getIntent().getExtras().getString("SYMPTOM_NAME");		
 		
 		String[] data = null;
@@ -52,21 +51,19 @@ public class SummaryActivity extends Activity
 			data = mySQLiteHandler.getBreakdown(search);	
 		}
 		
-		DisplayMetrics displayMetrics = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-		
-		TableLayout outer = (TableLayout)this.findViewById(R.id.summaryLayout);
+//		DisplayMetrics displayMetrics = new DisplayMetrics();
+//		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		
 		TableLayout upper = (TableLayout)findViewById(R.id.upper);
 		
-		TextView name = new TextView(this);
-		name.setTypeface(font, Typeface.BOLD);	
-		name.setPadding(20, 20, 20, 20);
-		name.setBackgroundColor(this.getResources().getColor(R.color.jh_purple));
-		name.setTextColor(Color.WHITE);
-		name.setTextSize(26f);
-		name.setText(data[NAME]);
-		upper.addView(name);
+		TextView title = new TextView(this);
+		title.setTypeface(font, Typeface.BOLD);	
+		title.setPadding(20, 20, 20, 20);
+		title.setBackgroundColor(this.getResources().getColor(R.color.jh_purple));
+		title.setTextColor(Color.WHITE);
+		title.setTextSize(20f);
+		title.setText(data[NAME]);
+		upper.addView(title);
 		
 //		ImageView image = new ImageView(this);
 //		image.setImageResource(R.drawable.potato);
@@ -87,7 +84,7 @@ public class SummaryActivity extends Activity
 		CirclePageIndicator circles = new CirclePageIndicator(this);
 		circles.setPadding(0, 0, 0, 20);
 		circles.setRadius(11f);
-		circles.setFillColor(this.getResources().getColor(R.color.jh_blue));
+		circles.setFillColor(this.getResources().getColor(R.color.jh_purple));
 		circles.setViewPager(pager);
 		lower.addView(circles);
 		
@@ -122,6 +119,7 @@ public class SummaryActivity extends Activity
 		test.setTypeface(font);
 		test.setPadding(0, 30, 0, 30);
 		test.setTextSize(18f);
+		test.getBackground().setColorFilter(this.getResources().getColor(R.color.jh_blue), PorterDuff.Mode.MULTIPLY);
 		test.setOnClickListener(new OnClickListener() 
 		{
 			@Override
@@ -141,9 +139,25 @@ public class SummaryActivity extends Activity
 		response.setTextSize(18f);
 		response.setText(data[RESPONSE]);
 		inner.addView(response);
-			
+		
+		Button email = new Button(this);
+		email.setTypeface(font);
+		email.setPadding(0, 30, 0, 30);
+		email.setTextSize(18f);
+		email.getBackground().setColorFilter(this.getResources().getColor(R.color.jh_blue), PorterDuff.Mode.MULTIPLY);
+		email.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View v) 
+			{
+				Intent takePictureActivity = new Intent(getApplicationContext(), TakePictureActivity.class);
+				startActivity(takePictureActivity);					
+			}
+		});
+		email.setText("Stuck? Email a friend");
+		inner.addView(email);		
+		
 		scroll.addView(inner);	
 		lower.addView(scroll);
-		//outer.addView(lower);
 	}
 }

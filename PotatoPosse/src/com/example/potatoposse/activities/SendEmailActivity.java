@@ -23,6 +23,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -42,9 +44,13 @@ public class SendEmailActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        
         img = getIntent().getExtras().getString("IMAGE");
         
-        setContentView(R.layout.activity_send_email);
+        setContentView(R.layout.sendemail);
         
         search = (EditText) findViewById(R.id.search);
         		
@@ -100,7 +106,7 @@ public class SendEmailActivity extends Activity {
         listView = (ListView) findViewById(R.id.list);
         
         final ArrayList<Contact> contacts = getNameEmailDetails();
-      Log.e("GOT HERE", "GOT HERE");  
+      //Log.e("GOT HERE", "GOT HERE");  
       
         // Defined Array values to show in ListView
         ArrayList<String> names = new ArrayList<String>();;
@@ -179,7 +185,7 @@ public class SendEmailActivity extends Activity {
 		  email.putExtra(Intent.EXTRA_EMAIL, new String[]{ address});
 		  email.putExtra(Intent.EXTRA_SUBJECT, "Help identify this potato problem");
 		  email.putExtra(Intent.EXTRA_TEXT, "Dear "+to+ "\n\nPlease help!");
-	Log.e("img", img);	 
+	//Log.e("img", img);	 
 		   email.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+img));
 
 		  // we need setType to prompts only email clients.
@@ -212,10 +218,10 @@ public class SendEmailActivity extends Activity {
 	        do {
 	            // names comes in hand sometimes
 	            String name = cur.getString(1);
-	            Log.e("Name : ", name);
+	            //Log.e("Name : ", name);
 	            
 	            String emlAddr = cur.getString(3);
-	            Log.e("Email : ", emlAddr);
+	            //Log.e("Email : ", emlAddr);
 	            
 	            // keep unique only
 	            if (emlRecsHS.add(emlAddr.toLowerCase())) {
