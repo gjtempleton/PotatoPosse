@@ -1,6 +1,7 @@
 package com.example.potatoposse.activities;
 
 import com.example.potatoposse.R;
+import com.example.potatoposse.utils.CirclePageIndicator;
 import com.example.potatoposse.utils.FontHelper;
 import com.example.potatoposse.utils.SQLiteHandler;
 import com.example.potatoposse.utils.ViewPagerAdapter;
@@ -56,6 +57,8 @@ public class SummaryActivity extends Activity
 		
 		TableLayout outer = (TableLayout)this.findViewById(R.id.summaryLayout);
 		
+		TableLayout upper = (TableLayout)findViewById(R.id.upper);
+		
 		TextView name = new TextView(this);
 		name.setTypeface(font, Typeface.BOLD);	
 		name.setPadding(20, 20, 20, 20);
@@ -63,21 +66,30 @@ public class SummaryActivity extends Activity
 		name.setTextColor(Color.WHITE);
 		name.setTextSize(26f);
 		name.setText(data[NAME]);
-		outer.addView(name);
+		upper.addView(name);
 		
-		ImageView image = new ImageView(this);
-		image.setImageResource(R.drawable.potato);
-		image.setPadding(20, 20, 20, 20);
-		LayoutParams imageParams = new LayoutParams(displayMetrics.widthPixels, displayMetrics.widthPixels);
-		image.setLayoutParams(imageParams);
-		outer.addView(image);
+//		ImageView image = new ImageView(this);
+//		image.setImageResource(R.drawable.potato);
+//		image.setPadding(20, 20, 20, 20);
+//		LayoutParams imageParams = new LayoutParams(displayMetrics.widthPixels, displayMetrics.widthPixels);
+//		image.setLayoutParams(imageParams);
+//		upper.addView(image);
 		
-//		int[] images = new int[]{ R.drawable.one, R.drawable.two, R.drawable.three };
-//		
-//		ViewPager pager = new ViewPager(this);
-//		PagerAdapter adapter = new ViewPagerAdapter(this, images, font);
-//		pager.setAdapter(adapter);
-//		outer.addView(pager);
+		int[] images = new int[]{ R.drawable.one, R.drawable.two, R.drawable.three };
+		
+		ViewPager pager = new ViewPager(this);
+		PagerAdapter adapter = new ViewPagerAdapter(this, images, font);
+		pager.setAdapter(adapter);
+		upper.addView(pager);
+		
+		TableLayout lower = (TableLayout)findViewById(R.id.lower);
+		
+		CirclePageIndicator circles = new CirclePageIndicator(this);
+		circles.setPadding(0, 0, 0, 20);
+		circles.setRadius(11f);
+		circles.setFillColor(this.getResources().getColor(R.color.jh_blue));
+		circles.setViewPager(pager);
+		lower.addView(circles);
 		
 		ScrollView scroll = new ScrollView(this);
 		TableLayout inner = new TableLayout(this);
@@ -131,6 +143,7 @@ public class SummaryActivity extends Activity
 		inner.addView(response);
 			
 		scroll.addView(inner);	
-		outer.addView(scroll);
+		lower.addView(scroll);
+		//outer.addView(lower);
 	}
 }
