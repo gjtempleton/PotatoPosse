@@ -14,6 +14,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View.OnClickListener;
 import android.view.View;
@@ -40,16 +41,26 @@ public class SummaryActivity extends Activity
 		
 		Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
 		
-		String search = getIntent().getExtras().getString("SYMPTOM_NAME");		
+		int TYPES = 3;
+		int DESCRIPTION = 0, RESPONSE = 1;		
+		int COUNT = 0;
+		
+		String name = getIntent().getExtras().getString("SYMPTOM_NAME");	
+		SQLiteHandler mySQLiteHandler = new SQLiteHandler(getBaseContext());
 		
 		String[] data = null;
-		int CATEGORY = 0, NAME = 1, DESCRIPTION = 2, TEST = 3, RESPONSE = 4;
+		boolean[] types = mySQLiteHandler.getTypesByName(name);
 		
-		if (search != null)
+		String[] CATEGORIES = new String[]{"LEAF", "PEST", "TUBER"};
+		String[] ICONS = new String[TYPES];
+		
+		for (int i=0; i<TYPES; i++)
 		{
-			SQLiteHandler mySQLiteHandler = new SQLiteHandler(getBaseContext());
-			data = mySQLiteHandler.getBreakdown(search);	
+			ICONS[i] = getString(FontHelper.getIcon(i));
+			if (types[i]) COUNT++;
 		}
+		
+		data = mySQLiteHandler.getProblemBreakdownByName(name);			
 		
 //		DisplayMetrics displayMetrics = new DisplayMetrics();
 //		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -62,7 +73,7 @@ public class SummaryActivity extends Activity
 		title.setBackgroundColor(this.getResources().getColor(R.color.jh_purple));
 		title.setTextColor(Color.WHITE);
 		title.setTextSize(20f);
-		title.setText(data[NAME]);
+		title.setText(name);
 		upper.addView(title);
 		
 //		ImageView image = new ImageView(this);
@@ -72,7 +83,7 @@ public class SummaryActivity extends Activity
 //		image.setLayoutParams(imageParams);
 //		upper.addView(image);
 		
-		int[] images = new int[]{ R.drawable.one, R.drawable.two, R.drawable.three };
+		int[] images = new int[]{ R.drawable.main, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e, R.drawable.f, R.drawable.g };
 		
 		ViewPager pager = new ViewPager(this);
 		PagerAdapter adapter = new ViewPagerAdapter(this, images, font);
@@ -98,8 +109,17 @@ public class SummaryActivity extends Activity
 		category.setPadding(0, 0, 0, 30);
 		category.setGravity(Gravity.CENTER_HORIZONTAL);
 		category.setTextSize(18f);
-		String icon = getString(FontHelper.getIcon(data[CATEGORY]));
-		category.setText(data[CATEGORY] + " " + icon);
+		String categoryText = "";
+		for (int i=0; i<TYPES; i++)
+		{
+			if (types[i])
+			{
+				categoryText += CATEGORIES[i] + " " + ICONS[i];
+			}
+			
+			if (i < COUNT-1) categoryText += "  |  ";
+		}
+		category.setText(categoryText);
 		inner.addView(category);
 		
 		ImageView divider = new ImageView(this);
@@ -113,7 +133,7 @@ public class SummaryActivity extends Activity
 		description.setText(data[DESCRIPTION]);
 		inner.addView(description);
 		
-		final String testName = data[TEST];
+		final String testName = "DUMMY TEST";
 		
 		Button test = new Button(this);
 		test.setTypeface(font);
@@ -130,7 +150,7 @@ public class SummaryActivity extends Activity
 				startActivity(testActivity);					
 			}
 		});
-		test.setText(data[TEST]);
+		test.setText(testName);
 		inner.addView(test);
 		
 		TextView response = new TextView(this);

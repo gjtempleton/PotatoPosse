@@ -42,7 +42,7 @@ public class TestActivity extends Activity
 		title.setText(testName);
 		upper.addView(title);
 		
-		int[] images = new int[]{ R.drawable.one, R.drawable.two, R.drawable.three };
+		int[] images = new int[]{ R.drawable.one, R.drawable.two, R.drawable.three, R.drawable.four, R.drawable.five, R.drawable.six };
 		
 		//DisplayMetrics displayMetrics = new DisplayMetrics();
 		//getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);

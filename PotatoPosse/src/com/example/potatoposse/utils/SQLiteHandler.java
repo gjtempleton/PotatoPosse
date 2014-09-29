@@ -14,8 +14,6 @@ public class SQLiteHandler extends SQLiteOpenHelper
 {
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "PotatoDB";
-	
-	private boolean firstTime = false;
 
 	public SQLiteHandler(Context context) 
 	{
@@ -28,92 +26,76 @@ public class SQLiteHandler extends SQLiteOpenHelper
 	@Override
 	public void onOpen(SQLiteDatabase db)
 	{
-			// SQL statement to create symptoms table
-			// Drop older symptoms table if existed
-			db.execSQL("DROP TABLE IF EXISTS symptoms");
-			String CREATE_SYMPTOM_TABLE = "CREATE TABLE symptoms (" +
-					"category TEXT, "+
-					"name TEXT, "+
-					"description TEXT, "+
-					"test TEXT, "+
-					"response TEXT)";
-
-			// create symptoms table
-			db.execSQL(CREATE_SYMPTOM_TABLE);
-			
-			//Populate the symptoms table with dummy data
-			String INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES (" +
-					"'LEAF', " +
-					"'LEAF NAME', " +
-					"'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas efficitur justo mi, sed convallis leo convallis nec. Nulla lobortis et orci eu iaculis. Sed convallis egestas ipsum sed molestie. Nulla et enim facilisis, tempor erat vel, malesuada dolor. Nulla magna urna, vestibulum eu fermentum id, convallis at est. Nam sed euismod est.', " + 
-					"'LEAF TEST', " + 
-					"'Phasellus euismod elit in erat scelerisque, vitae aliquam libero commodo. Nulla suscipit fermentum ex nec dictum. Nam imperdiet varius cursus. Donec ultricies pharetra laoreet. Donec aliquet egestas felis, a hendrerit ante aliquam quis. Integer a enim vitae odio feugiat luctus rutrum eget lacus.')";
-			db.execSQL(INSERT_DUMMY_DATA);
-
-			INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('PEST', 'PEST NAME', 'PEST DESCRIPTION', 'PEST RESPONSE', 'PEST TEST')";
-			db.execSQL(INSERT_DUMMY_DATA);
-
-			INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TUBER NAME', 'TUBER DESCRIPTION', 'TUBER RESPONSE', 'TUBER TEST')";
-			db.execSQL(INSERT_DUMMY_DATA);
-			INSERT_DUMMY_DATA = "INSERT INTO symptoms VALUES ('TUBER', 'TUBER NAME 2', 'TUBER DESCRIPTION 2', 'TUBER RESPONSE 2', 'TUBER TEST 2')";
-			db.execSQL(INSERT_DUMMY_DATA);
+		DBHelper dbHelper = new DBHelper(db);
+		dbHelper.runTests();
+		dbHelper.runProblems();
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
 	{
-		db.execSQL("DROP TABLE IF EXISTS symptoms");
+		db.execSQL("DROP TABLE IF EXISTS tests;" +
+				   "DROP TABLE IF EXISTS problems;");
 		this.onCreate(db);
 	}
 
-	public String[]  getSymptoms(String type)
-	{
-		String Table_Name="symptoms";
-		String selectQuery = "SELECT name FROM  "+ Table_Name + " WHERE category='"+type+"'";
+	public String[] getListOfProblemsByType(String type)
+	{		
+		String query = "SELECT name FROM problems WHERE "+type.toLowerCase()+"=1;";
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery(selectQuery, null);
+		Cursor cursor = db.rawQuery(query, null);
 		String[] data = new String[cursor.getCount()];
-		int j = 0;
 		
+		int j = 0;		
 		if (cursor.moveToFirst()) 
 		{
 			do 
 			{
 				data[j] = cursor.getString(0);
 				j++;
-				// get the data into array, or class variable
-
 			} 
 			while (cursor.moveToNext());
-		}
-		
+		}		
 		db.close();
+		
 		return data;
 	}
 
-	public String[] getBreakdown(String name)
+	public boolean[] getTypesByName(String name)
 	{
-		String Table_Name="symptoms";
-
-		String selectQuery = "SELECT * FROM  "+ Table_Name + " WHERE name='"+name+"'";
-		Log.w("QUERY STRING", selectQuery);
+		String query = "SELECT leaf, pest, tuber FROM problems WHERE name='"+name+"';";
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+		boolean[] data = new boolean[3];
+				
+		if (cursor.moveToFirst()) 
+		{
+			do 
+			{
+				data[0] = cursor.getInt(0)>0;
+				data[1] = cursor.getInt(1)>0;
+				data[2] = cursor.getInt(2)>0;
+			} 
+			while (cursor.moveToNext());
+		}		
+		db.close();
 		
+		return data;
+	}
+	
+	public String[] getProblemBreakdownByName(String name)
+	{
+		String selectQuery = "SELECT description, control FROM problems WHERE name='"+name+"';";		
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
-		String[] data = new String[cursor.getColumnCount()];
-
-		int j = 0;
-		
-		if (cursor.moveToFirst()) {
-			do {
+		String[] data = new String[2];
+	
+		if (cursor.moveToFirst()) 
+		{
+			do 
+			{
 				data[0] = cursor.getString(0);
 				data[1] = cursor.getString(1);
-				data[2] = cursor.getString(2);
-				data[3] = cursor.getString(3);
-				data[4] = cursor.getString(4);			
-				j++;
-				// get the data into array, or class variable
-
 			} 
 			while (cursor.moveToNext());
 		}

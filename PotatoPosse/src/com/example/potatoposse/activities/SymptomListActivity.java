@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,9 +34,9 @@ public class SymptomListActivity extends ListActivity
 
 		SQLiteHandler mySQLiteHandler = new SQLiteHandler(getBaseContext());
 		
- 		if(type != null)
+ 		if (type != null)
 		{
-			response = mySQLiteHandler.getSymptoms(type);
+			response = mySQLiteHandler.getListOfProblemsByType(type);
 			setListAdapter(new ThumbnailAdapter(this, R.layout.row, response));			
 		}
 	}
@@ -74,7 +75,7 @@ public class SymptomListActivity extends ListActivity
 			label.setText(symptomName);
 			
 			ImageView thumbnail = (ImageView)row.findViewById(R.id.thumbnail);
-			thumbnail.setImageResource(R.drawable.potato);
+			thumbnail.setImageResource(R.drawable.main);
 			thumbnail.setPadding(20, 20, 20, 20);
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);
 			thumbnail.setLayoutParams(params);
