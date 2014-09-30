@@ -2,7 +2,7 @@ package com.example.potatoposse.utils;
 
 import com.example.potatoposse.R;
 
-public class FontHelper 
+public class CategoryHandler 
 {
 	public static int getIcon(int index)
 	{
@@ -12,6 +12,7 @@ public class FontHelper
 			case 1: return R.string.ic_pest;
 			case 2: return R.string.ic_tuber;
 		}
+		
 		return -1;
 	}
 	
@@ -22,5 +23,10 @@ public class FontHelper
 		else if (name.equals("TUBER")) return R.string.ic_tuber;
 
 		return -1;
+	}
+	
+	public static String[] getCategories()
+	{
+		return new String[]{"LEAF", "PEST", "TUBER"};
 	}
 }

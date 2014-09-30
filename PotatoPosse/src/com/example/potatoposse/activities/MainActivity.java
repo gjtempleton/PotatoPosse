@@ -1,7 +1,7 @@
 package com.example.potatoposse.activities;
 
 import com.example.potatoposse.R;
-import com.example.potatoposse.utils.FontHelper;
+import com.example.potatoposse.utils.CategoryHandler;
 
 import android.app.TabActivity;
 import android.content.Intent;
@@ -31,19 +31,16 @@ public class MainActivity extends TabActivity
 
 	    final TabHost tabHost = getTabHost();
 	    
-	    Intent intent = new Intent().setClass(this, SymptomListActivity.class);
-	    intent.putExtra("TYPE", "LEAF");
-	    tabHost.addTab(tabHost.newTabSpec("LEAF").setIndicator("LEAF").setContent(intent));
-	    
-	    intent = new Intent().setClass(this, SymptomListActivity.class);
-	    intent.removeExtra("TYPE");
-	    intent.putExtra("TYPE", "PEST");
-	    tabHost.addTab(tabHost.newTabSpec("PEST").setIndicator("PEST").setContent(intent));
-	    
-	    intent = new Intent().setClass(this, SymptomListActivity.class);
-	    intent.removeExtra("TYPE");
-	    intent.putExtra("TYPE", "TUBER");
-	    tabHost.addTab(tabHost.newTabSpec("TUBER").setIndicator("TUBER").setContent(intent));
+	    Intent intent;
+	    String[] CATEGORIES = CategoryHandler.getCategories();
+	    boolean first = true;
+	    for (int i=0; i<CATEGORIES.length; i++)
+	    {
+	    	intent = new Intent().setClass(this, SymptomListActivity.class);
+	    	if (!first) intent.removeExtra("TYPE");
+		    intent.putExtra("TYPE", CATEGORIES[i]);
+		    tabHost.addTab(tabHost.newTabSpec(CATEGORIES[i]).setIndicator(CATEGORIES[i]).setContent(intent));
+	    }
 	    
 	    tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() 
 	    {			
@@ -71,7 +68,7 @@ public class MainActivity extends TabActivity
 		    tv.setTextSize(30);
 		    tv.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
 		    
-		    tv.setText(getString(FontHelper.getIcon(i)));
+		    tv.setText(getString(CategoryHandler.getIcon(i)));
 			
     		if (tabHost.getTabWidget().getChildAt(i).isSelected()) //this tab is currently selected
     		{
