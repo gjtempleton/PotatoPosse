@@ -2,7 +2,7 @@ package com.example.potatoposse.activities;
 
 import com.example.potatoposse.R;
 import com.example.potatoposse.utils.CirclePageIndicator;
-import com.example.potatoposse.utils.FontHelper;
+import com.example.potatoposse.utils.CategoryHandler;
 import com.example.potatoposse.utils.SQLiteHandler;
 import com.example.potatoposse.utils.ViewPagerAdapter;
 
@@ -56,7 +56,7 @@ public class SummaryActivity extends Activity
 		
 		for (int i=0; i<TYPES; i++)
 		{
-			ICONS[i] = getString(FontHelper.getIcon(i));
+			ICONS[i] = getString(CategoryHandler.getIcon(i));
 			if (types[i]) COUNT++;
 		}
 		
