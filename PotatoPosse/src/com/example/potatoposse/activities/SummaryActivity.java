@@ -14,7 +14,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View.OnClickListener;
 import android.view.View;
@@ -29,6 +28,19 @@ import android.widget.TextView;
 
 public class SummaryActivity extends Activity
 {	
+	private Typeface font;
+	
+	private String name;
+	
+	private String[] CATEGORIES;
+	private int TYPES;
+	private String[] ICONS;
+	
+	private boolean[] types;
+	private String[] data;
+	
+	private int COUNT = 0;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -37,22 +49,24 @@ public class SummaryActivity extends Activity
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
-		setContentView(R.layout.summary);
+		setContentView(R.layout.summary);		
 		
-		Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
+		setupVariables();
+		setupView();		
+	}
+	
+	private void setupVariables()
+	{
+		font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");	
 		
-		int TYPES = 3;
-		int DESCRIPTION = 0, RESPONSE = 1;		
-		int COUNT = 0;
-		
-		String name = getIntent().getExtras().getString("SYMPTOM_NAME");	
+		name = getIntent().getExtras().getString("SYMPTOM_NAME");
 		SQLiteHandler mySQLiteHandler = new SQLiteHandler(getBaseContext());
 		
-		String[] data = null;
-		boolean[] types = mySQLiteHandler.getTypesByName(name);
+		CATEGORIES = CategoryHandler.getCategories();
+		TYPES = CATEGORIES.length;
+		ICONS = new String[TYPES];
 		
-		String[] CATEGORIES = new String[]{"LEAF", "PEST", "TUBER"};
-		String[] ICONS = new String[TYPES];
+		types = mySQLiteHandler.getTypesByName(name);
 		
 		for (int i=0; i<TYPES; i++)
 		{
@@ -60,11 +74,11 @@ public class SummaryActivity extends Activity
 			if (types[i]) COUNT++;
 		}
 		
-		data = mySQLiteHandler.getProblemBreakdownByName(name);			
-		
-//		DisplayMetrics displayMetrics = new DisplayMetrics();
-//		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-		
+		data = mySQLiteHandler.getProblemBreakdownByName(name);
+	}
+	
+	private void setupView()
+	{
 		TableLayout upper = (TableLayout)findViewById(R.id.upper);
 		
 		TextView title = new TextView(this);
@@ -75,13 +89,6 @@ public class SummaryActivity extends Activity
 		title.setTextSize(20f);
 		title.setText(name);
 		upper.addView(title);
-		
-//		ImageView image = new ImageView(this);
-//		image.setImageResource(R.drawable.potato);
-//		image.setPadding(20, 20, 20, 20);
-//		LayoutParams imageParams = new LayoutParams(displayMetrics.widthPixels, displayMetrics.widthPixels);
-//		image.setLayoutParams(imageParams);
-//		upper.addView(image);
 		
 		int[] images = new int[]{ R.drawable.main, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e, R.drawable.f, R.drawable.g };
 		
@@ -130,7 +137,7 @@ public class SummaryActivity extends Activity
 		description.setTypeface(font);
 		description.setPadding(0, 30, 0, 30);
 		description.setTextSize(18f);
-		description.setText(data[DESCRIPTION]);
+		description.setText(data[CategoryHandler.getIndex("DESCRIPTION")]);
 		inner.addView(description);
 		
 		final String testName = "DUMMY TEST";
@@ -157,7 +164,7 @@ public class SummaryActivity extends Activity
 		response.setTypeface(font);
 		response.setPadding(0, 30, 0, 30);
 		response.setTextSize(18f);
-		response.setText(data[RESPONSE]);
+		response.setText(data[CategoryHandler.getIndex("CONTROL")]);
 		inner.addView(response);
 		
 		Button email = new Button(this);

@@ -29,4 +29,12 @@ public class CategoryHandler
 	{
 		return new String[]{"LEAF", "PEST", "TUBER"};
 	}
+	
+	public static int getIndex(String field)
+	{
+		if (field.equals("DESCRIPTION")) return 0;
+		else if (field.equals("CONTROL")) return 1;
+		
+		return -1;
+	}
 }
