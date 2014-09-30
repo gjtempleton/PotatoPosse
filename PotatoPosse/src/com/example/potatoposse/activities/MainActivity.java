@@ -28,10 +28,15 @@ public class MainActivity extends TabActivity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
         setContentView(R.layout.main);
-
-	    final TabHost tabHost = getTabHost();
-	    
-	    Intent intent;
+        
+	    setupTabs();
+    }
+    
+    private void setupTabs()
+    {
+    	final TabHost tabHost = getTabHost();
+    	
+    	Intent intent;
 	    String[] CATEGORIES = CategoryHandler.getCategories();
 	    boolean first = true;
 	    for (int i=0; i<CATEGORIES.length; i++)
@@ -48,8 +53,7 @@ public class MainActivity extends TabActivity
 			{
 				setTabColors(tabHost);
 			}
-		});
-	    
+		});	    
 	    tabHost.setCurrentTab(0);
 	    setTabColors(tabHost);
     }
@@ -66,8 +70,7 @@ public class MainActivity extends TabActivity
 	        params.setMargins(0, 20, 0, 20);
 	        tv.setLayoutParams(params);
 		    tv.setTextSize(30);
-		    tv.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-		    
+		    tv.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);		    
 		    tv.setText(getString(CategoryHandler.getIcon(i)));
 			
     		if (tabHost.getTabWidget().getChildAt(i).isSelected()) //this tab is currently selected
