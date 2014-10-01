@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <TableLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mainLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
+    
+    <TableLayout
+        android:id="@+id/navbar"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+    </TableLayout>
 
     <TabHost
         android:id="@android:id/tabhost"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -29,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0" />
         </LinearLayout>
+        
     </TabHost>
 
 </TableLayout>

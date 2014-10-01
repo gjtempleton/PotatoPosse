@@ -20,7 +20,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import android.content.Context;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class HTTPHandler {
 	HttpClient client = new DefaultHttpClient();
@@ -33,10 +35,14 @@ public class HTTPHandler {
 	String responseString;
 	Context CONTEXT;
 	String lastTimeUpdated;
-	String lastUpdateOnServer;
+	String lastUpdateOnServer = "";
 	String locations[][] = new String[2][3];
 
-	public HTTPHandler(String request, Context thisContext){
+	public HTTPHandler(Context thisContext)
+	{
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		StrictMode.setThreadPolicy(policy);
+		
 		CONTEXT = thisContext;
 		locations[0][0] = (CONTEXT.getDir("zips", 0).toString() + "media.zip");
 		locations[0][1] = CONTEXT.getDir("images", 0).toString();
@@ -45,35 +51,6 @@ public class HTTPHandler {
 		locations[1][1] = CONTEXT.getDir("testImages", 0).toString();
 		locations[1][2] = TEST_IMAGES_LOCATION;
 		lastTimeUpdated = PreferenceManager.getDefaultSharedPreferences(CONTEXT).getString("LAST_TIME_UPDATED", "NO_UPDATE");
-		this.request = request;
-		
-		try 
-		{
-			response = client.execute(new HttpGet(request));
-			StatusLine status = response.getStatusLine();
-			
-			if (status.getStatusCode()==HttpStatus.SC_OK)
-			{
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				response.getEntity().writeTo(out);
-				out.close();
-				responseString = out.toString();
-			}
-			else
-			{
-		        //closes the connection
-		        response.getEntity().getContent().close();
-		        throw new IOException(status.getReasonPhrase());
-		    }
-		} 
-		catch (ClientProtocolException e) 
-		{
-			e.printStackTrace();
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -94,9 +71,10 @@ public class HTTPHandler {
 			String str;
 			//Set local lastUpdateOnServer to be date read in from server in form yyyyMMdd
 			while ((str = in.readLine()) != null) {
-				if (str.length()>2) lastUpdateOnServer = str;            	
+				lastUpdateOnServer += str;            	
 			}
 			in.close();
+			
 			String lastUpdateOnDevice = PreferenceManager.getDefaultSharedPreferences(CONTEXT).getString("LAST_TIME_UPDATED", null);
 			
 			int serverDate = Integer.parseInt(lastUpdateOnServer);
@@ -113,7 +91,7 @@ public class HTTPHandler {
 		try
 		{
 			for(int i = 0; i<locations.length; i++){
-				URL imagesUrl = new URL(locations[i][3]);
+				URL imagesUrl = new URL(locations[i][2]);
 
 				URLConnection ucon = imagesUrl.openConnection();
 				ucon.setReadTimeout(5000);
@@ -158,11 +136,11 @@ public class HTTPHandler {
 		return true;
 	}
 
-	public boolean downloadDatabaseFile(final String path)
+	public boolean downloadDatabaseFile()
 	{
 		try
 		{
-			URL url = new URL(path);
+			URL url = new URL(DB_LOCATION);
 
 			URLConnection ucon = url.openConnection();
 			ucon.setReadTimeout(5000);
@@ -173,7 +151,7 @@ public class HTTPHandler {
 			/**
 			 * Update last time database was updated
 			 */
-			PreferenceManager.getDefaultSharedPreferences(CONTEXT).edit().putString("LAST_TIME_UPDATED", "myStringToSave").commit(); 
+			PreferenceManager.getDefaultSharedPreferences(CONTEXT).edit().putString("LAST_TIME_UPDATED", lastUpdateOnServer).commit(); 
 
 			/**
 			 * Database download
