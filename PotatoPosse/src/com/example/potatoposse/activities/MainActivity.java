@@ -14,11 +14,13 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TabHost;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity 
 {	
+	Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
     @Override
     protected void onCreate(Bundle savedInstanceState) 
     {
@@ -28,7 +30,14 @@ public class MainActivity extends TabActivity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
         setContentView(R.layout.main);
-        
+        TableLayout layout = (TableLayout)findViewById(R.id.mainLayout);
+        TextView title = new TextView(this);
+		title.setTypeface(font, Typeface.BOLD);	
+		title.setPadding(20, 20, 20, 20);
+		title.setBackgroundColor(this.getResources().getColor(R.color.jh_purple));
+		title.setTextColor(Color.WHITE);
+		title.setTextSize(20f);		
+		layout.addView(title);
 	    setupTabs();
     }
     
@@ -60,7 +69,7 @@ public class MainActivity extends TabActivity
     
     private void setTabColors(TabHost tabHost)
     {    	
-    	Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
+    	
     	
     	for (int i=0; i<tabHost.getTabWidget().getTabCount(); i++)
     	{
