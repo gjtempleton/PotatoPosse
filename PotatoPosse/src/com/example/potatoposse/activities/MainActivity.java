@@ -1,14 +1,20 @@
 package com.example.potatoposse.activities;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.example.potatoposse.R;
 import com.example.potatoposse.utils.CategoryHandler;
 import com.example.potatoposse.utils.HTTPHandler;
+import com.example.potatoposse.utils.ZipHandler;
 
 import android.app.TabActivity;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -29,6 +35,7 @@ import android.widget.Toast;
 public class MainActivity extends TabActivity 
 {	
 	Typeface font;
+	String locations[][] = new String[2][3];
     @Override
     protected void onCreate(Bundle savedInstanceState) 
     {
@@ -36,15 +43,8 @@ public class MainActivity extends TabActivity
         
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        firstTimeSetup();
         
-        String lastUpdateDate = PreferenceManager.getDefaultSharedPreferences(this).getString("LAST_TIME_UPDATED", null);
-        if (lastUpdateDate == null)
-        {
-        	Date now = new Date();
-        	String formatted = new SimpleDateFormat("yyyyMMdd").format(now);
-        	
-        	PreferenceManager.getDefaultSharedPreferences(this).edit().putString("LAST_TIME_UPDATED", formatted).commit();
-        }
         
         setContentView(R.layout.main);
         
@@ -52,6 +52,74 @@ public class MainActivity extends TabActivity
         
         setupNavBar();
 	    setupTabs();
+    }
+    
+    private void firstTimeSetup(){
+    	locations[0][0] = (this.getDir("zips", 0).toString() + "media.zip");
+		locations[0][1] = this.getDir("images", 0).toString();
+		locations[0][2] = "media.zip";
+		locations[1][0] = (this.getDir("zips", 0).toString() + "tests.zip");
+		locations[1][1] = this.getDir("testImages", 0).toString();
+		locations[1][2] = "tests.zip";
+		
+    	String lastUpdateDate = PreferenceManager.getDefaultSharedPreferences(this).getString("LAST_TIME_UPDATED", null);
+        if (lastUpdateDate == null)
+        {
+        	AssetManager assets = getAssets();
+        	for(int i=0; i<2; i++){
+    			File file = new File( locations[i][1]);
+    	        if (file.exists())
+    			{
+    				file.delete();
+    			}
+    	        try {
+    	        	FileOutputStream outStream = new FileOutputStream(file);
+    				InputStream inStream = assets.open(locations[i][2]);
+    				byte[] buff = new byte[5 * 1024];
+    				int len;
+    				while ((len = inStream.read(buff)) != -1)
+    				{
+    					outStream.write(buff, 0, len);
+    				}
+
+    				outStream.flush();
+    				outStream.close();
+    				inStream.close();
+    				ZipHandler.unpackZip(locations[i][1], file.getAbsolutePath());
+    			} catch (IOException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+    		}
+        	File file = new File( this.getDatabasePath("potatoDB").toString());
+            if (file.exists())
+    		{
+    			file.delete();
+    		}
+            try {
+            	FileOutputStream outStream = new FileOutputStream(file);
+    			InputStream inStream = assets.open("potatoDB.db");
+    			byte[] buff = new byte[5 * 1024];
+
+    			int len;
+    			while ((len = inStream.read(buff)) != -1)
+    			{
+    				outStream.write(buff, 0, len);
+    			}
+
+    			outStream.flush();
+    			outStream.close();
+    			inStream.close();
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        	Date now = new Date();
+        	String formatted = new SimpleDateFormat("yyyyMMdd").format(now);
+        	
+        	PreferenceManager.getDefaultSharedPreferences(this).edit().putString("LAST_TIME_UPDATED", formatted).commit();
+        }
+        
     }
     
     private void setupNavBar()
