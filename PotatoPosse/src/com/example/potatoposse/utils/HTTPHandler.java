@@ -1,3 +1,5 @@
+//TODO: CAN THIS BE DELETED?!?!
+
 package com.example.potatoposse.utils;
 
 import java.io.ByteArrayOutputStream;
@@ -11,33 +13,42 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-public class HTTPHandler {
+public class HTTPHandler 
+{
 	HttpClient client = new DefaultHttpClient();
 	String request;
 	HttpResponse response;
 	String responseString;
 	
-	public HTTPHandler(String request){
+	public HTTPHandler(String request)
+	{
 		this.request = request;
-		try {
+		
+		try 
+		{
 			response = client.execute(new HttpGet(request));
 			StatusLine status = response.getStatusLine();
-			if(status.getStatusCode()==HttpStatus.SC_OK){
+			
+			if (status.getStatusCode()==HttpStatus.SC_OK)
+			{
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 		        response.getEntity().writeTo(out);
 		        out.close();
 		        responseString = out.toString();
 			}
-			else{
-		        //Closes the connection.
+			else
+			{
+		        //closes the connection
 		        response.getEntity().getContent().close();
 		        throw new IOException(status.getReasonPhrase());
 		    }
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (ClientProtocolException e) 
+		{
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (IOException e) 
+		{
 			e.printStackTrace();
 		}
 	}
