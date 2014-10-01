@@ -1,5 +1,3 @@
-//TODO: CAN THIS BE DELETED?!?!
-
 package com.example.potatoposse.utils;
 
 import java.io.BufferedInputStream;
@@ -78,6 +76,10 @@ public class HTTPHandler {
 		}
 	}
 
+	/**
+	 * Returns true if app data is up to date, false otherwise
+	 * @return
+	 */
 	public boolean getServerUpdateDate()
 	{
 		try
@@ -95,10 +97,14 @@ public class HTTPHandler {
 				if (str.length()>2) lastUpdateOnServer = str;            	
 			}
 			in.close();
+			String lastUpdateOnDevice = PreferenceManager.getDefaultSharedPreferences(CONTEXT).getString("LAST_TIME_UPDATED", null);
+			
+			int serverDate = Integer.parseInt(lastUpdateOnServer);
+			int deviceDate = Integer.parseInt(lastUpdateOnDevice);
+			if(serverDate>deviceDate) return false;
 		} catch (MalformedURLException e) {
 		} catch (IOException e) {
 		}
-
 		return true;
 	}
 
@@ -106,10 +112,6 @@ public class HTTPHandler {
 	{
 		try
 		{
-			/**
-			 * Update last time database was updated
-			 */
-			PreferenceManager.getDefaultSharedPreferences(CONTEXT).edit().putString("LAST_TIME_UPDATED", "myStringToSave").commit(); 
 			for(int i = 0; i<locations.length; i++){
 				URL imagesUrl = new URL(locations[i][3]);
 
