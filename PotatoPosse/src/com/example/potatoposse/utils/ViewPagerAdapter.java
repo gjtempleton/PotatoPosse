@@ -3,9 +3,11 @@ package com.example.potatoposse.utils;
 import com.example.potatoposse.R;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,21 +20,23 @@ import android.widget.TableLayout;
 public class ViewPagerAdapter extends PagerAdapter 
 {
     Context context;
-    int[] images;
+    String dir;
+    String[] paths;
     LayoutInflater inflater;
     Typeface font;
  
-    public ViewPagerAdapter(Context context, int[] images, Typeface font) 
+    public ViewPagerAdapter(Context context, String dir, String[] paths, Typeface font) 
     {
         this.context = context;
-        this.images = images;
+        this.dir = dir;
+        this.paths = paths;
         this.font = font;
     }
  
     @Override
     public int getCount() 
     {
-        return images.length;
+        return paths.length;
     }
  
     @Override
@@ -49,7 +53,7 @@ public class ViewPagerAdapter extends PagerAdapter
  
         ImageView image = (ImageView)itemView.findViewById(R.id.image);
         image.setPadding(20, 20, 20, 20);
-        image.setImageResource(images[position]);
+        image.setImageBitmap(BitmapFactory.decodeFile(dir+"/"+paths[position]));
  
         ((ViewPager)container).addView(itemView);
  

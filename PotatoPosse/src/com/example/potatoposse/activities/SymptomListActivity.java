@@ -6,6 +6,7 @@ import com.example.potatoposse.utils.SQLiteHandler;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -22,22 +23,22 @@ import android.widget.TextView;
 
 public class SymptomListActivity extends ListActivity
 {
-	String[] response = null;
+	SQLiteHandler mySQLiteHandler;
+	
+	String[] response;
+	String path;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
-		String type = getIntent().getExtras().getString("TYPE");
 
-		SQLiteHandler mySQLiteHandler = new SQLiteHandler(getBaseContext());
+		String type = getIntent().getExtras().getString("TYPE");
 		
- 		if (type != null)
-		{
-			response = mySQLiteHandler.getListOfProblemsByType(type);
-			setListAdapter(new ThumbnailAdapter(this, R.layout.row, response));			
-		}
+		mySQLiteHandler = new SQLiteHandler(getBaseContext());
+		response = mySQLiteHandler.getListOfProblemsByType(type);
+		
+		setListAdapter(new ThumbnailAdapter(this, R.layout.row, response));	
 	}
 	
 	//array adapter to create list asynchronously and update it
@@ -74,7 +75,19 @@ public class SymptomListActivity extends ListActivity
 			label.setText(symptomName);
 			
 			ImageView thumbnail = (ImageView)row.findViewById(R.id.thumbnail);
-			thumbnail.setImageResource(R.drawable.main);
+			path = mySQLiteHandler.getMainProblemImageByName(symptomName);
+			if (path == null)
+			{
+				thumbnail.setImageResource(R.drawable.na);
+			}
+			else 
+			{
+				int index = path.lastIndexOf('/');
+				path = path.substring(index+1);
+				String directory = getApplicationContext().getDir("images", 0).toString();
+				directory += getApplicationContext().getString(R.string.path_diseases);
+				thumbnail.setImageBitmap(BitmapFactory.decodeFile(directory+"/"+path));
+			}
 			thumbnail.setPadding(20, 20, 20, 20);
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);
 			thumbnail.setLayoutParams(params);

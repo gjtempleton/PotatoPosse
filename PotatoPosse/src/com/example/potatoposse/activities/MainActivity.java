@@ -19,6 +19,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,8 +44,8 @@ public class MainActivity extends TabActivity
         
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        firstTimeSetup();
         
+        firstTimeSetup();
         
         setContentView(R.layout.main);
         
@@ -73,6 +74,12 @@ public class MainActivity extends TabActivity
     				file.delete();
     			}
     	        try {
+    	        	if (!new File(file.getParent()).exists())
+    	        	{
+    	        		new File(file.getParent()).mkdir();
+    	        	}
+    	        	
+    	        	file.createNewFile();
     	        	FileOutputStream outStream = new FileOutputStream(file);
     				InputStream inStream = assets.open(locations[i][2]);
     				byte[] buff = new byte[5 * 1024];
@@ -92,11 +99,19 @@ public class MainActivity extends TabActivity
     			}
     		}
         	File file = new File( this.getDatabasePath("potatoDB").toString());
+        	Log.w("THIS IS ABSO PATH", file.getAbsolutePath());
             if (file.exists())
     		{
     			file.delete();
     		}
+            
             try {
+            	if (!new File(file.getParent()).exists())
+	        	{
+	        		new File(file.getParent()).mkdir();
+	        	}
+            	
+            	file.createNewFile();
             	FileOutputStream outStream = new FileOutputStream(file);
     			InputStream inStream = assets.open("potatoDB.db");
     			byte[] buff = new byte[5 * 1024];
