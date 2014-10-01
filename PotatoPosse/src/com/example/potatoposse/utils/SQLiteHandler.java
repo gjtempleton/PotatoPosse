@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 public class SQLiteHandler extends SQLiteOpenHelper
 {
@@ -85,9 +84,9 @@ public class SQLiteHandler extends SQLiteOpenHelper
 	
 	public String[] getProblemBreakdownByName(String name)
 	{
-		String selectQuery = "SELECT description, control FROM problems WHERE name='"+name+"';";		
+		String query = "SELECT description, control FROM problems WHERE name='"+name+"';";		
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery(selectQuery, null);
+		Cursor cursor = db.rawQuery(query, null);
 		String[] data = new String[2];
 	
 		if (cursor.moveToFirst()) 
@@ -103,34 +102,31 @@ public class SQLiteHandler extends SQLiteOpenHelper
 		
 		return data;
 	}
-
-	public Bitmap[] getImages(String symptomName, boolean all){
-		Bitmap[] result;
+	
+	private int getIdByName(String name)
+	{
+		String query = "SELECT id FROM problems WHERE name='"+name+"';";
 		SQLiteDatabase db = this.getReadableDatabase();
-		String selection;
-		if(all){
-			selection = "*";
-		}
-		else{
-			selection = "image1";
-		}
-		String query = "SELECT " + selection + " FROM IMAGES WHERE SYMPTOM = " + symptomName;
 		Cursor cursor = db.rawQuery(query, null);
-		result = new Bitmap[cursor.getCount()];
-		int i =0;
+		int id = 0;
 		
-		if (cursor.moveToFirst()) 
+		if (cursor.moveToFirst())
 		{
-			do 
+			do
 			{
-				ByteArrayInputStream inputStream = new ByteArrayInputStream(cursor.getBlob(0));
-				Bitmap b = BitmapFactory.decodeStream(inputStream);
-				result[i] = b;
-				i++;
-			} 
+				id = cursor.getInt(0);
+			}
 			while (cursor.moveToNext());
 		}
 		db.close();
-		return result;	
+		
+		return id;
+	}
+
+	public String[] getProblemImagesByName(String name)
+	{
+		int id = getIdByName(name);
+		
+		return null;
 	}
 }

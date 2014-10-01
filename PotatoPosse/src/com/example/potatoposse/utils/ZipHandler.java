@@ -9,15 +9,13 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import android.util.Log;
-
-public class zipHelper {
-
-	
+public class ZipHandler 
+{
 	public static boolean unpackZip(String path, String zipname)
 	{       
 	     InputStream is;
 	     ZipInputStream zis;
+	     
 	     try 
 	     { 
 	         String filename;    
@@ -33,22 +31,18 @@ public class zipHelper {
 	         
 	         while ((ze = zis.getNextEntry()) != null) 
 	         {
-	        	 
-	             // zapis do souboru
 	        	 filename = ze.getName();      	 
 	             
-	        	 // Need to create directories if not exists, or
-	             // it will generate an Exception...
-	             if (ze.isDirectory()) {
-	               File fmd = new File(path + filename);
-	                fmd.mkdirs();
-	                continue;
+	        	 //need to create directories if not exists, or will generate an exception
+	             if (ze.isDirectory()) 
+	             {
+	            	 File fmd = new File(path + filename);
+	                 fmd.mkdirs();
+	                 continue;
 	             }
 
 	             FileOutputStream fout = new FileOutputStream(path + filename);
 
-Log.e("GOT_HERE",filename);	  
-	             // cteni zipu a zapis
 	             while ((count = zis.read(buffer)) != -1) 
 	             {
 	                 fout.write(buffer, 0, count);             
@@ -65,6 +59,6 @@ Log.e("GOT_HERE",filename);
 	         return false;
 	     }
 
-	    return true;
+	     return true;
 	}
 }

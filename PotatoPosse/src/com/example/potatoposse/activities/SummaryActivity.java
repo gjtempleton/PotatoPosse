@@ -14,6 +14,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View.OnClickListener;
 import android.view.View;
@@ -75,6 +76,8 @@ public class SummaryActivity extends Activity
 		}
 		
 		data = mySQLiteHandler.getProblemBreakdownByName(name);
+		
+		//String[] id = mySQLiteHandler.getProblemImagesByName(name);
 	}
 	
 	private void setupView()
@@ -124,7 +127,7 @@ public class SummaryActivity extends Activity
 				categoryText += CATEGORIES[i] + " " + ICONS[i];
 			}
 			
-			if (i < COUNT-1) categoryText += "  |  ";
+			if (i < COUNT-1) categoryText += "  |  "; //TODO: fix this!!!!!!!!!!111
 		}
 		category.setText(categoryText);
 		inner.addView(category);

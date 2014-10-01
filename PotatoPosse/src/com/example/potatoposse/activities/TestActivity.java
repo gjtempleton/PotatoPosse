@@ -27,11 +27,16 @@ public class TestActivity extends Activity
 	
         setContentView(R.layout.test);
         
-        Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
+        String name = getIntent().getExtras().getString("TEST_NAME");
         
-        String testName = getIntent().getExtras().getString("TEST_NAME");
-        
-        TableLayout upper = (TableLayout)findViewById(R.id.upper);
+        setupView(name);
+	}
+	
+	private void setupView(String name)
+	{
+		Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
+		
+		TableLayout upper = (TableLayout)findViewById(R.id.upper);
         
         TextView title = new TextView(this);
 		title.setTypeface(font, Typeface.BOLD);	
@@ -39,13 +44,10 @@ public class TestActivity extends Activity
 		title.setBackgroundColor(this.getResources().getColor(R.color.jh_green));
 		title.setTextColor(Color.WHITE);
 		title.setTextSize(20f);
-		title.setText(testName);
+		title.setText(name);
 		upper.addView(title);
 		
 		int[] images = new int[]{ R.drawable.one, R.drawable.two, R.drawable.three, R.drawable.four, R.drawable.five, R.drawable.six };
-		
-		//DisplayMetrics displayMetrics = new DisplayMetrics();
-		//getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		
 		ViewPager pager = new ViewPager(this);
 		PagerAdapter adapter = new ViewPagerAdapter(this, images, font);
