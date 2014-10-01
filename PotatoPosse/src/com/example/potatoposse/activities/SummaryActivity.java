@@ -30,6 +30,8 @@ import android.widget.TextView;
 
 public class SummaryActivity extends Activity
 {	
+	private SQLiteHandler mySQLiteHandler;
+	
 	private String name;
 	
 	private String[] CATEGORIES;
@@ -59,7 +61,7 @@ public class SummaryActivity extends Activity
 	private void setupVariables()
 	{		
 		name = getIntent().getExtras().getString("SYMPTOM_NAME");
-		SQLiteHandler mySQLiteHandler = new SQLiteHandler(getBaseContext());
+		mySQLiteHandler = new SQLiteHandler(getBaseContext());
 		
 		CATEGORIES = CategoryHandler.getCategories();
 		TYPES = CATEGORIES.length;
@@ -167,7 +169,8 @@ public class SummaryActivity extends Activity
 					startActivity(testActivity);					
 				}
 			});
-			button.setText((tests.get(i)).toString());
+			String testName = mySQLiteHandler.getTestNameById(id);
+			button.setText(testName);
 			buttons.add(button);
 		}
 		
@@ -207,14 +210,16 @@ public class SummaryActivity extends Activity
 	private String getCategoryText()
 	{
 		String text = "";
+		int ADDED = 0;
 		for (int i=0; i<TYPES; i++)
 		{
 			if (types[i])
 			{
 				text += CATEGORIES[i] + " " + ICONS[i];
+				ADDED++;
+				
+				if (ADDED < COUNT) text += "  |  ";
 			}
-			
-			if (i < COUNT-1) text += "  |  "; //TODO: fix this!!!!!!!!!!111
 		}
 		return text;
 	}

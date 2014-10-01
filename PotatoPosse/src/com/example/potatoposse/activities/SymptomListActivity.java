@@ -63,17 +63,6 @@ public class SymptomListActivity extends ListActivity
 			
 			final String symptomName = response[position];
 			
-			final TextView label = (TextView)row.findViewById(R.id.label);
-			label.setTypeface(MainActivity.FONT);
-			label.setTextSize(18f);	
-			label.setPadding(20, 81, 20, 81);
-			DisplayMetrics displayMetrics = new DisplayMetrics();
-			getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-			int temp = displayMetrics.widthPixels;
-			label.setMinimumWidth(temp-200);
-			label.setGravity(Gravity.RIGHT);
-			label.setText(symptomName);
-			
 			ImageView thumbnail = (ImageView)row.findViewById(R.id.thumbnail);
 			String path = mySQLiteHandler.getMainProblemImageByName(symptomName);
 			if (path == null)
@@ -90,8 +79,20 @@ public class SymptomListActivity extends ListActivity
 			}
 			thumbnail.setPadding(20, 20, 20, 20);
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);
+			params.gravity = Gravity.CENTER_VERTICAL;
 			thumbnail.setLayoutParams(params);
 			thumbnail.setVisibility(View.VISIBLE);
+			
+			final TextView label = (TextView)row.findViewById(R.id.label);
+			label.setTypeface(MainActivity.FONT);
+			label.setTextSize(18f);	
+			label.setPadding(20, 81, 20, 81);
+			DisplayMetrics displayMetrics = new DisplayMetrics();
+			getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+			int temp = displayMetrics.widthPixels;
+			label.setMinimumWidth(temp-200);
+			label.setGravity(Gravity.RIGHT);
+			label.setText(symptomName);
 			
 			row.setOnClickListener(new OnClickListener() 
 			{
