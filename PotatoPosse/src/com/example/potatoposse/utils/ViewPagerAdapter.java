@@ -4,7 +4,6 @@ import com.example.potatoposse.R;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -23,14 +22,12 @@ public class ViewPagerAdapter extends PagerAdapter
     String dir;
     String[] paths;
     LayoutInflater inflater;
-    Typeface font;
- 
-    public ViewPagerAdapter(Context context, String dir, String[] paths, Typeface font) 
+    
+    public ViewPagerAdapter(Context context, String dir, String[] paths) 
     {
         this.context = context;
         this.dir = dir;
         this.paths = paths;
-        this.font = font;
     }
  
     @Override
@@ -49,12 +46,13 @@ public class ViewPagerAdapter extends PagerAdapter
     public Object instantiateItem(ViewGroup container, int position) 
     {     	
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View itemView = inflater.inflate(R.layout.viewpager, container, false);
         
+        View itemView = inflater.inflate(R.layout.viewpager, container, false);
+     
         ImageView image = (ImageView)itemView.findViewById(R.id.image);
         image.setPadding(20, 20, 20, 20);
         image.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-        image.setImageBitmap(BitmapFactory.decodeFile(dir+"/"+paths[position])); 
+        image.setImageBitmap(BitmapFactory.decodeFile(dir+"/"+paths[position]));
         ((ViewPager)container).addView(itemView);
  
         return itemView;

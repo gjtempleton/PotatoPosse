@@ -30,8 +30,6 @@ import android.widget.TextView;
 
 public class SummaryActivity extends Activity
 {	
-	private Typeface font;
-	
 	private String name;
 	
 	private String[] CATEGORIES;
@@ -41,7 +39,6 @@ public class SummaryActivity extends Activity
 	private boolean[] types;
 	private String[] data;
 	private String[] imagePaths;
-	private int[] tests;
 	
 	private int COUNT = 0;
 	
@@ -60,9 +57,7 @@ public class SummaryActivity extends Activity
 	}
 	
 	private void setupVariables()
-	{
-		font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");	
-		
+	{		
 		name = getIntent().getExtras().getString("SYMPTOM_NAME");
 		SQLiteHandler mySQLiteHandler = new SQLiteHandler(getBaseContext());
 		
@@ -93,7 +88,7 @@ public class SummaryActivity extends Activity
 		TableLayout upper = (TableLayout)findViewById(R.id.upper);
 		
 		TextView title = new TextView(this);
-		title.setTypeface(font, Typeface.BOLD);	
+		title.setTypeface(MainActivity.FONT, Typeface.BOLD);	
 		title.setPadding(20, 20, 20, 20);
 		title.setBackgroundColor(this.getResources().getColor(R.color.jh_purple));
 		title.setTextColor(Color.WHITE);
@@ -115,7 +110,7 @@ public class SummaryActivity extends Activity
 			ViewPager pager = new ViewPager(this);
 			String directory = this.getDir("images", 0).toString();
 			directory += this.getString(R.string.path_diseases);
-			PagerAdapter adapter = new ViewPagerAdapter(this, directory, imagePaths, font);
+			PagerAdapter adapter = new ViewPagerAdapter(this, directory, imagePaths);
 			pager.setAdapter(adapter);
 			upper.addView(pager);
 			
@@ -133,7 +128,7 @@ public class SummaryActivity extends Activity
 		inner.setPadding(20, 20, 20, 20);
 		
 		TextView category = new TextView(this);
-		category.setTypeface(font);
+		category.setTypeface(MainActivity.FONT);
 		category.setPadding(0, 0, 0, 30);
 		category.setGravity(Gravity.CENTER_HORIZONTAL);
 		category.setTextSize(18f);
@@ -145,7 +140,7 @@ public class SummaryActivity extends Activity
 		inner.addView(divider);
 		
 		TextView description = new TextView(this);
-		description.setTypeface(font);
+		description.setTypeface(MainActivity.FONT);
 		description.setPadding(0, 30, 0, 30);
 		description.setTextSize(18f);
 		description.setText(data[CategoryHandler.getIndex("DESCRIPTION")]);
@@ -158,7 +153,7 @@ public class SummaryActivity extends Activity
 			final int id = tests.get(i);
 			
 			Button button = new Button(this);
-			button.setTypeface(font);
+			button.setTypeface(MainActivity.FONT);
 			button.setPadding(0, 30, 0, 30);
 			button.setTextSize(18f);
 			button.getBackground().setColorFilter(this.getResources().getColor(R.color.jh_blue), PorterDuff.Mode.MULTIPLY);
@@ -182,14 +177,14 @@ public class SummaryActivity extends Activity
 		}
 		
 		TextView response = new TextView(this);
-		response.setTypeface(font);
+		response.setTypeface(MainActivity.FONT);
 		response.setPadding(0, 30, 0, 30);
 		response.setTextSize(18f);
 		response.setText(data[CategoryHandler.getIndex("CONTROL")]);
 		inner.addView(response);
 		
 		Button email = new Button(this);
-		email.setTypeface(font);
+		email.setTypeface(MainActivity.FONT);
 		email.setPadding(0, 30, 0, 30);
 		email.setTextSize(18f);
 		email.getBackground().setColorFilter(this.getResources().getColor(R.color.jh_blue), PorterDuff.Mode.MULTIPLY);

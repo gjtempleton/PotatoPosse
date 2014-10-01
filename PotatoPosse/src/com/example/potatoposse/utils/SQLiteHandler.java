@@ -1,13 +1,9 @@
 package com.example.potatoposse.utils;
 
-import java.io.ByteArrayInputStream;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 public class SQLiteHandler extends SQLiteOpenHelper
@@ -32,20 +28,10 @@ public class SQLiteHandler extends SQLiteOpenHelper
 	public void onCreate(SQLiteDatabase db) { }
 
 	@Override
-	public void onOpen(SQLiteDatabase db)
-	{
-//		DBHelper dbHelper = new DBHelper(db);
-//		dbHelper.runTests();
-//		dbHelper.runProblems();
-	}
+	public void onOpen(SQLiteDatabase db) { }
 
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
-	{
-//		db.execSQL("DROP TABLE IF EXISTS uploadingVideos_test;" +
-//				   "DROP TABLE IF EXISTS uploadingImages_problem;");
-//		this.onCreate(db);
-	}
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { }
 
 	public String[] getListOfProblemsByType(String type)
 	{		

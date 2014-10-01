@@ -14,7 +14,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TableLayout;
@@ -60,13 +59,11 @@ public class TestActivity extends Activity
 	}
 	
 	private void setupView()
-	{
-		Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
-		
+	{		
 		TableLayout upper = (TableLayout)findViewById(R.id.upper);
         
         TextView title = new TextView(this);
-		title.setTypeface(font, Typeface.BOLD);	
+		title.setTypeface(MainActivity.FONT, Typeface.BOLD);	
 		title.setPadding(20, 20, 20, 20);
 		title.setBackgroundColor(this.getResources().getColor(R.color.jh_green));
 		title.setTextColor(Color.WHITE);
@@ -77,7 +74,7 @@ public class TestActivity extends Activity
 		ViewPager pager = new ViewPager(this);
 		String directory = this.getDir("testImages", 0).toString();
 		directory += this.getString(R.string.path_tests);
-		PagerAdapter adapter = new ViewPagerAdapter(this, directory, paths, font);
+		PagerAdapter adapter = new ViewPagerAdapter(this, directory, paths);
 		pager.setAdapter(adapter);
 		upper.addView(pager);
 		

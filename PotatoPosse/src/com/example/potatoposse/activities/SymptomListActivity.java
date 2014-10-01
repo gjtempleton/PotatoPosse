@@ -1,5 +1,7 @@
 package com.example.potatoposse.activities;
 
+import java.util.Arrays;
+
 import com.example.potatoposse.R;
 import com.example.potatoposse.utils.SQLiteHandler;
 
@@ -7,7 +9,6 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -26,7 +27,6 @@ public class SymptomListActivity extends ListActivity
 	SQLiteHandler mySQLiteHandler;
 	
 	String[] response;
-	String path;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -37,6 +37,7 @@ public class SymptomListActivity extends ListActivity
 		
 		mySQLiteHandler = new SQLiteHandler(getBaseContext());
 		response = mySQLiteHandler.getListOfProblemsByType(type);
+		Arrays.sort(response);
 		
 		setListAdapter(new ThumbnailAdapter(this, R.layout.row, response));	
 	}
@@ -63,8 +64,7 @@ public class SymptomListActivity extends ListActivity
 			final String symptomName = response[position];
 			
 			final TextView label = (TextView)row.findViewById(R.id.label);
-			Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
-			label.setTypeface(font);
+			label.setTypeface(MainActivity.FONT);
 			label.setTextSize(18f);	
 			label.setPadding(20, 81, 20, 81);
 			DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -75,7 +75,7 @@ public class SymptomListActivity extends ListActivity
 			label.setText(symptomName);
 			
 			ImageView thumbnail = (ImageView)row.findViewById(R.id.thumbnail);
-			path = mySQLiteHandler.getMainProblemImageByName(symptomName);
+			String path = mySQLiteHandler.getMainProblemImageByName(symptomName);
 			if (path == null)
 			{
 				thumbnail.setImageResource(R.drawable.na);
