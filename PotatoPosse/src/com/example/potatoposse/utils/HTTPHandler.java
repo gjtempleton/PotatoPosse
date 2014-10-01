@@ -36,9 +36,16 @@ public class HTTPHandler {
 	Context CONTEXT;
 	String lastTimeUpdated;
 	String lastUpdateOnServer;
+	String locations[][] = new String[2][3];
 
 	public HTTPHandler(String request, Context thisContext){
 		CONTEXT = thisContext;
+		locations[0][0] = (CONTEXT.getDir("zips", 0).toString() + "media.zip");
+		locations[0][1] = CONTEXT.getDir("images", 0).toString();
+		locations[0][2] = IMAGES_LOCATION;
+		locations[1][0] = (CONTEXT.getDir("zips", 0).toString() + "tests.zip");
+		locations[1][1] = CONTEXT.getDir("testImages", 0).toString();
+		locations[1][2] = TEST_IMAGES_LOCATION;
 		lastTimeUpdated = PreferenceManager.getDefaultSharedPreferences(CONTEXT).getString("LAST_TIME_UPDATED", "NO_UPDATE");
 		this.request = request;
 		
@@ -99,9 +106,12 @@ public class HTTPHandler {
 	{
 		try
 		{
-			for(int i = 0; i<2; i++){
-				URL imagesUrl = new URL(TEST_IMAGES_LOCATION);
-				if(i==0) imagesUrl = new URL(IMAGES_LOCATION);
+			/**
+			 * Update last time database was updated
+			 */
+			PreferenceManager.getDefaultSharedPreferences(CONTEXT).edit().putString("LAST_TIME_UPDATED", "myStringToSave").commit(); 
+			for(int i = 0; i<locations.length; i++){
+				URL imagesUrl = new URL(locations[i][3]);
 
 				URLConnection ucon = imagesUrl.openConnection();
 				ucon.setReadTimeout(5000);
@@ -109,15 +119,11 @@ public class HTTPHandler {
 
 				InputStream is = ucon.getInputStream();
 				BufferedInputStream inStream = new BufferedInputStream(is, 1024 * 5);
-				/**
-				 * Update last time database was updated
-				 */
-				PreferenceManager.getDefaultSharedPreferences(CONTEXT).edit().putString("LAST_TIME_UPDATED", "myStringToSave").commit(); 
 
 				/**
 				 * Database download
 				 */
-				File file = new File( CONTEXT.getDir("zips", 0).toString() + "media.zip");
+				File file = new File(locations[i][0]);
 
 				if (file.exists())
 				{
@@ -137,6 +143,7 @@ public class HTTPHandler {
 				outStream.flush();
 				outStream.close();
 				inStream.close();
+				ZipHandler.unpackZip(locations[i][1], file.getAbsolutePath());
 			}
 
 		}
