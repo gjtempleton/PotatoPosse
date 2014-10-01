@@ -20,10 +20,10 @@ public class ZipHandler
 	     { 
 	         String filename;    
 	         
-	         File newDr = new File(path+"zipExample");
+	         File newDr = new File(path);
              newDr.mkdirs();
 	         
-	         is = new FileInputStream(path + zipname);
+	         is = new FileInputStream(zipname);
 	         zis = new ZipInputStream(new BufferedInputStream(is));          
 	         ZipEntry ze;
 	         byte[] buffer = new byte[1024];
