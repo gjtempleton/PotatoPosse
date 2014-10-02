@@ -228,11 +228,13 @@ public class SummaryActivity extends Activity
 	{
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		
-		String test1 = data[CategoryHandler.getIndex("TEST_1")];
-		String test2 = data[CategoryHandler.getIndex("TEST_2")];
-		
-		if (test1 != null) list.add(Integer.parseInt(test1));
-		if (test2 != null) list.add(Integer.parseInt(test2));
+		String test1 = data[CategoryHandler.getIndex("TEST_1")];		
+		if (test1 != null && !test1.equals("3")) 
+		{
+			list.add(Integer.parseInt(test1));
+			String test2 = data[CategoryHandler.getIndex("TEST_2")];
+			if (test2 != null) list.add(Integer.parseInt(test2));
+		}
 		
 		return list;
 	}
