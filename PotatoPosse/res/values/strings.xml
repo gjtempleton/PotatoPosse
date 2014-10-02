@@ -13,5 +13,6 @@
     
     <string name="path_diseases">"home/ubuntu/potatoWebApp/potato/media/temp/disease_images"</string>
     <string name="path_tests">"home/ubuntu/potatoWebApp/potato/media/temp/test_images"</string>
+    <string name="path_videos">"http://54.72.106.175/media/"</string>
 
 </resources>

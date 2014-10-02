@@ -9,23 +9,30 @@ import com.example.potatoposse.utils.SQLiteHandler;
 import com.example.potatoposse.utils.ViewPagerAdapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-public class TestActivity extends Activity 
+public class TestActivity extends Activity
 {
 	private int id;
 	private String name;
 	
 	private String[][] images;
 	private String[] paths;
+	
+	private String video;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -56,6 +63,8 @@ public class TestActivity extends Activity
 			int index = paths[j].lastIndexOf('/');
 			paths[j] = paths[j].substring(index+1);
 		}
+        
+        video = mySQLiteHandler.getVideoUrlById(id);
 	}
 	
 	private void setupView()
@@ -86,6 +95,26 @@ public class TestActivity extends Activity
 		circles.setFillColor(this.getResources().getColor(R.color.jh_green));
 		circles.setViewPager(pager);
 		lower.addView(circles);
+		
+		TextView link = new TextView(this);
+		link.setTypeface(MainActivity.FONT);
+		link.setPadding(0, 50, 0, 0);
+		link.setTextSize(18f);
+		link.setTextColor(this.getResources().getColor(R.color.jh_blue));
+		link.setGravity(Gravity.CENTER_HORIZONTAL);
+		final String url = this.getResources().getString(R.string.path_videos)+video;
+		link.setOnClickListener(new OnClickListener()
+		{			
+			@Override
+			public void onClick(View v) 
+			{
+				Uri uri = Uri.parse(url);
+				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				startActivity(intent);
+			}	
+		});
+		link.setText("Link to "+name+" video");
+		lower.addView(link);
 	}
 	
 	private String[] sortImages()

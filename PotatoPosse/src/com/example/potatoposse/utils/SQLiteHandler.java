@@ -208,4 +208,24 @@ public class SQLiteHandler extends SQLiteOpenHelper
 		
 		return data;
 	}
+	
+	public String getVideoUrlById(int id)
+	{
+		String query = "SELECT video1 FROM "+TESTS+" WHERE id="+id+";";
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+		String name = null;
+		
+		if (cursor.moveToFirst())
+		{
+			do
+			{
+				name = cursor.getString(0);
+			}
+			while (cursor.moveToNext());
+		}
+		db.close();
+		
+		return name;
+	}
 }
