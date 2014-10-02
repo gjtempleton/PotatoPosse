@@ -146,7 +146,7 @@ public class SummaryActivity extends Activity
 		
 		TextView description = new TextView(this);
 		description.setTypeface(MainActivity.FONT);
-		description.setPadding(0, 30, 0, 30);
+		description.setPadding(0, 30, 0, 0);
 		description.setTextSize(18f);
 		Spannable dSpan = new SpannableString("DESCRIPTION\n"+data[CategoryHandler.getIndex("DESCRIPTION")]);
 		dSpan.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.jh_purple)), 0, 11, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -157,6 +157,18 @@ public class SummaryActivity extends Activity
 		ArrayList<Button> buttons = new ArrayList<Button>();		
 		for (int i=0; i<tests.size(); i++)
 		{		
+			if (i == 0)
+			{
+				TextView label = new TextView(this);
+				label.setTypeface(MainActivity.FONT);
+				label.setPadding(0, 30, 0, 0);
+				label.setTextSize(18f);
+				Spannable tSpan = new SpannableString("TEST");
+				tSpan.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.jh_purple)), 0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				label.setText(tSpan);
+				inner.addView(label);
+			}
+			
 			final int id = tests.get(i);
 			
 			Button button = new Button(this);
