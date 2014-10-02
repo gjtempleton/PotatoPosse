@@ -1,13 +1,16 @@
 package com.example.potatoposse.utils;
 
 import com.example.potatoposse.R;
+import com.example.potatoposse.activities.ZoomImageActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
@@ -52,7 +55,19 @@ public class ViewPagerAdapter extends PagerAdapter
         ImageView image = (ImageView)itemView.findViewById(R.id.image);
         image.setPadding(20, 20, 20, 20);
         image.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-        image.setImageBitmap(BitmapFactory.decodeFile(dir+"/"+paths[position]));
+        final String path = dir+"/"+paths[position];
+        image.setImageBitmap(BitmapFactory.decodeFile(path));
+        image.setOnLongClickListener(new OnLongClickListener()
+        {
+			@Override
+			public boolean onLongClick(View v) 
+			{
+				Intent zoomActivity = new Intent(context, ZoomImageActivity.class);
+				zoomActivity.putExtra("IMAGE_PATH", path);
+				context.startActivity(zoomActivity);
+				return true;
+			}
+        });
         ((ViewPager)container).addView(itemView);
  
         return itemView;
