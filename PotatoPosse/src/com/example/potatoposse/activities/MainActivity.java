@@ -12,7 +12,9 @@ import com.example.potatoposse.utils.CategoryHandler;
 import com.example.potatoposse.utils.HTTPHandler;
 import com.example.potatoposse.utils.ZipHandler;
 
+import android.app.AlertDialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Color;
@@ -34,8 +36,8 @@ import android.widget.Toast;
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity 
 {	
-	Typeface font;
-	String locations[][] = new String[2][3];
+	public static Typeface FONT;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) 
     {
@@ -43,18 +45,21 @@ public class MainActivity extends TabActivity
         
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        firstTimeSetup();
-        
         
         setContentView(R.layout.main);
         
-        font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
+        String lastUpdateDate = PreferenceManager.getDefaultSharedPreferences(this).getString("LAST_TIME_UPDATED", null);
+        if (lastUpdateDate == null) firstTimeSetup();
+        
+        FONT = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");
         
         setupNavBar();
 	    setupTabs();
     }
     
-    private void firstTimeSetup(){
+    private void firstTimeSetup()
+    {
+    	String locations[][] = new String[2][3];
     	locations[0][0] = (this.getDir("zips", 0).toString() + "media.zip");
 		locations[0][1] = this.getDir("images", 0).toString();
 		locations[0][2] = "media.zip";
@@ -62,64 +67,76 @@ public class MainActivity extends TabActivity
 		locations[1][1] = this.getDir("testImages", 0).toString();
 		locations[1][2] = "tests.zip";
 		
-    	String lastUpdateDate = PreferenceManager.getDefaultSharedPreferences(this).getString("LAST_TIME_UPDATED", null);
-        if (lastUpdateDate == null)
-        {
-        	AssetManager assets = getAssets();
-        	for(int i=0; i<2; i++){
-    			File file = new File( locations[i][1]);
-    	        if (file.exists())
-    			{
-    				file.delete();
-    			}
-    	        try {
-    	        	FileOutputStream outStream = new FileOutputStream(file);
-    				InputStream inStream = assets.open(locations[i][2]);
-    				byte[] buff = new byte[5 * 1024];
-    				int len;
-    				while ((len = inStream.read(buff)) != -1)
-    				{
-    					outStream.write(buff, 0, len);
-    				}
+        AssetManager assets = getAssets();
+    	for (int i=0; i<2; i++)
+    	{
+			File file = new File( locations[i][1]);
+	        if (file.exists())
+			{
+				file.delete();
+			}
+	        try 
+	        {
+	        	if (!new File(file.getParent()).exists())
+	        	{
+	        		new File(file.getParent()).mkdir();
+	        	}
+	        	
+	        	file.createNewFile();
+	        	FileOutputStream outStream = new FileOutputStream(file);
+				InputStream inStream = assets.open(locations[i][2]);
+				byte[] buff = new byte[5 * 1024];
+				int len;
+				
+				while ((len = inStream.read(buff)) != -1)
+				{
+					outStream.write(buff, 0, len);
+				}
 
-    				outStream.flush();
-    				outStream.close();
-    				inStream.close();
-    				ZipHandler.unpackZip(locations[i][1], file.getAbsolutePath());
-    			} catch (IOException e) {
-    				// TODO Auto-generated catch block
-    				e.printStackTrace();
-    			}
-    		}
-        	File file = new File( this.getDatabasePath("potatoDB").toString());
-            if (file.exists())
-    		{
-    			file.delete();
-    		}
-            try {
-            	FileOutputStream outStream = new FileOutputStream(file);
-    			InputStream inStream = assets.open("potatoDB.db");
-    			byte[] buff = new byte[5 * 1024];
-
-    			int len;
-    			while ((len = inStream.read(buff)) != -1)
-    			{
-    				outStream.write(buff, 0, len);
-    			}
-
-    			outStream.flush();
-    			outStream.close();
-    			inStream.close();
-    		} catch (IOException e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
-    		}
-        	Date now = new Date();
-        	String formatted = new SimpleDateFormat("yyyyMMdd").format(now);
-        	
-        	PreferenceManager.getDefaultSharedPreferences(this).edit().putString("LAST_TIME_UPDATED", formatted).commit();
-        }
+				outStream.flush();
+				outStream.close();
+				inStream.close();
+				ZipHandler.unpackZip(locations[i][1], file.getAbsolutePath());
+			} 
+	        catch (IOException e) 
+	        {
+				e.printStackTrace();
+			}
+		}
+    	
+    	File file = new File(this.getDatabasePath("potatoDB").toString());
+        if (file.exists()) file.delete();
         
+        try 
+        {
+        	if (!new File(file.getParent()).exists())
+        	{
+        		new File(file.getParent()).mkdir();
+        	}
+        	
+        	file.createNewFile();
+        	FileOutputStream outStream = new FileOutputStream(file);
+			InputStream inStream = assets.open("potatoDB.db");
+			byte[] buff = new byte[5 * 1024];
+
+			int len;
+			while ((len = inStream.read(buff)) != -1)
+			{
+				outStream.write(buff, 0, len);
+			}
+
+			outStream.flush();
+			outStream.close();
+			inStream.close();
+		} 
+        catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+        
+    	Date now = new Date();
+    	String formatted = new SimpleDateFormat("yyyyMMdd").format(now);    	
+    	PreferenceManager.getDefaultSharedPreferences(this).edit().putString("LAST_TIME_UPDATED", formatted).commit();
     }
     
     private void setupNavBar()
@@ -127,7 +144,7 @@ public class MainActivity extends TabActivity
     	TableLayout navbar = (TableLayout)findViewById(R.id.navbar);
         
         TextView title = new TextView(this);
-		title.setTypeface(font, Typeface.BOLD);	
+		title.setTypeface(FONT, Typeface.BOLD);	
 		title.setPadding(20, 20, 20, 20);
 		title.setBackgroundColor(this.getResources().getColor(R.color.jh_blue));
 		title.setTextColor(Color.WHITE);
@@ -145,10 +162,7 @@ public class MainActivity extends TabActivity
 				}
 				else
 				{
-					httpHandler.downloadDatabaseFile();
-					Toast.makeText(MainActivity.this, "Database successfully updated", Toast.LENGTH_SHORT).show();
-					httpHandler.downloadMediaZips();
-					Toast.makeText(MainActivity.this, "Media files successfully updated", Toast.LENGTH_SHORT).show();
+					updateFiles(httpHandler);
 				}
 			}			
 		});
@@ -187,7 +201,7 @@ public class MainActivity extends TabActivity
     	for (int i=0; i<tabHost.getTabWidget().getTabCount(); i++)
     	{
 			TextView tv = (TextView)tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
-			tv.setTypeface(font);
+			tv.setTypeface(FONT);
 			LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 	        params.setMargins(0, 20, 0, 20);
 	        tv.setLayoutParams(params);
@@ -207,4 +221,33 @@ public class MainActivity extends TabActivity
     		}   		
     	}
     }
+    
+    private void updateFiles(HTTPHandler httpHandler)
+    {
+    	final HTTPHandler myHttpHandler = httpHandler;
+    	
+    	AlertDialog ad = new AlertDialog.Builder(MainActivity.this).create();
+		ad.setTitle("Update");
+		ad.setMessage("Do you wish to update the database and media files?");      		
+		ad.setButton(DialogInterface.BUTTON_POSITIVE, "Enter", new DialogInterface.OnClickListener() 
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which) 
+			{
+				myHttpHandler.downloadDatabaseFile();
+				Toast.makeText(MainActivity.this, "Database successfully updated", Toast.LENGTH_SHORT).show();
+				myHttpHandler.downloadMediaZips();
+				Toast.makeText(MainActivity.this, "Media files successfully updated", Toast.LENGTH_SHORT).show();
+			}
+		});        		
+		ad.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() 
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which) 
+			{ 
+				Toast.makeText(MainActivity.this, "Update cancelled", Toast.LENGTH_SHORT).show();
+			}
+		});
+		ad.show();
+	}      
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">PotatoPosse</string>
+    <string name="app_name">PROtato</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     
@@ -10,5 +10,8 @@
     <string name="ic_leaf">&#xf06c;</string>
     <string name="ic_pest">&#xf188;</string>
     <string name="ic_tuber">&#xf0c3;</string>
+    
+    <string name="path_diseases">"home/ubuntu/potatoWebApp/potato/media/temp/disease_images"</string>
+    <string name="path_tests">"home/ubuntu/potatoWebApp/potato/media/temp/test_images"</string>
 
 </resources>

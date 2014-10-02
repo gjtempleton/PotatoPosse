@@ -1,5 +1,7 @@
 package com.example.potatoposse.activities;
 
+import java.util.ArrayList;
+
 import com.example.potatoposse.R;
 import com.example.potatoposse.utils.CirclePageIndicator;
 import com.example.potatoposse.utils.CategoryHandler;
@@ -14,7 +16,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View.OnClickListener;
 import android.view.View;
@@ -29,7 +30,7 @@ import android.widget.TextView;
 
 public class SummaryActivity extends Activity
 {	
-	private Typeface font;
+	private SQLiteHandler mySQLiteHandler;
 	
 	private String name;
 	
@@ -39,6 +40,7 @@ public class SummaryActivity extends Activity
 	
 	private boolean[] types;
 	private String[] data;
+	private String[] imagePaths;
 	
 	private int COUNT = 0;
 	
@@ -57,11 +59,9 @@ public class SummaryActivity extends Activity
 	}
 	
 	private void setupVariables()
-	{
-		font = Typeface.createFromAsset(getAssets(), "fontawesome.ttf");	
-		
+	{		
 		name = getIntent().getExtras().getString("SYMPTOM_NAME");
-		SQLiteHandler mySQLiteHandler = new SQLiteHandler(getBaseContext());
+		mySQLiteHandler = new SQLiteHandler(getBaseContext());
 		
 		CATEGORIES = CategoryHandler.getCategories();
 		TYPES = CATEGORIES.length;
@@ -77,7 +77,12 @@ public class SummaryActivity extends Activity
 		
 		data = mySQLiteHandler.getProblemBreakdownByName(name);
 		
-		//String[] id = mySQLiteHandler.getProblemImagesByName(name);
+		imagePaths = mySQLiteHandler.getProblemImagesByName(name);
+		for (int j=0; j<imagePaths.length; j++)
+		{
+			int index = imagePaths[j].lastIndexOf('/');
+			imagePaths[j] = imagePaths[j].substring(index+1);
+		}
 	}
 	
 	private void setupView()
@@ -85,7 +90,7 @@ public class SummaryActivity extends Activity
 		TableLayout upper = (TableLayout)findViewById(R.id.upper);
 		
 		TextView title = new TextView(this);
-		title.setTypeface(font, Typeface.BOLD);	
+		title.setTypeface(MainActivity.FONT, Typeface.BOLD);	
 		title.setPadding(20, 20, 20, 20);
 		title.setBackgroundColor(this.getResources().getColor(R.color.jh_purple));
 		title.setTextColor(Color.WHITE);
@@ -93,21 +98,31 @@ public class SummaryActivity extends Activity
 		title.setText(name);
 		upper.addView(title);
 		
-		int[] images = new int[]{ R.drawable.main, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e, R.drawable.f, R.drawable.g };
-		
-		ViewPager pager = new ViewPager(this);
-		PagerAdapter adapter = new ViewPagerAdapter(this, images, font);
-		pager.setAdapter(adapter);
-		upper.addView(pager);
-		
 		TableLayout lower = (TableLayout)findViewById(R.id.lower);
 		
-		CirclePageIndicator circles = new CirclePageIndicator(this);
-		circles.setPadding(0, 0, 0, 20);
-		circles.setRadius(11f);
-		circles.setFillColor(this.getResources().getColor(R.color.jh_purple));
-		circles.setViewPager(pager);
-		lower.addView(circles);
+		if (imagePaths.length == 0)
+		{
+			ImageView blank = new ImageView(this);
+			blank.setPadding(20, 20, 20, 20);
+			blank.setImageResource(R.drawable.na);
+			upper.addView(blank);
+		}
+		else
+		{		
+			ViewPager pager = new ViewPager(this);
+			String directory = this.getDir("images", 0).toString();
+			directory += this.getString(R.string.path_diseases);
+			PagerAdapter adapter = new ViewPagerAdapter(this, directory, imagePaths);
+			pager.setAdapter(adapter);
+			upper.addView(pager);
+			
+			CirclePageIndicator circles = new CirclePageIndicator(this);
+			circles.setPadding(0, 0, 0, 20);
+			circles.setRadius(11f);
+			circles.setFillColor(this.getResources().getColor(R.color.jh_purple));
+			circles.setViewPager(pager);
+			lower.addView(circles);
+		}
 		
 		ScrollView scroll = new ScrollView(this);
 		TableLayout inner = new TableLayout(this);
@@ -115,21 +130,11 @@ public class SummaryActivity extends Activity
 		inner.setPadding(20, 20, 20, 20);
 		
 		TextView category = new TextView(this);
-		category.setTypeface(font);
+		category.setTypeface(MainActivity.FONT);
 		category.setPadding(0, 0, 0, 30);
 		category.setGravity(Gravity.CENTER_HORIZONTAL);
 		category.setTextSize(18f);
-		String categoryText = "";
-		for (int i=0; i<TYPES; i++)
-		{
-			if (types[i])
-			{
-				categoryText += CATEGORIES[i] + " " + ICONS[i];
-			}
-			
-			if (i < COUNT-1) categoryText += "  |  "; //TODO: fix this!!!!!!!!!!111
-		}
-		category.setText(categoryText);
+		category.setText(getCategoryText());
 		inner.addView(category);
 		
 		ImageView divider = new ImageView(this);
@@ -137,41 +142,52 @@ public class SummaryActivity extends Activity
 		inner.addView(divider);
 		
 		TextView description = new TextView(this);
-		description.setTypeface(font);
+		description.setTypeface(MainActivity.FONT);
 		description.setPadding(0, 30, 0, 30);
 		description.setTextSize(18f);
 		description.setText(data[CategoryHandler.getIndex("DESCRIPTION")]);
 		inner.addView(description);
 		
-		final String testName = "DUMMY TEST";
-		
-		Button test = new Button(this);
-		test.setTypeface(font);
-		test.setPadding(0, 30, 0, 30);
-		test.setTextSize(18f);
-		test.getBackground().setColorFilter(this.getResources().getColor(R.color.jh_blue), PorterDuff.Mode.MULTIPLY);
-		test.setOnClickListener(new OnClickListener() 
-		{
-			@Override
-			public void onClick(View v) 
+		ArrayList<Integer> tests = getTestIdList();		
+		ArrayList<Button> buttons = new ArrayList<Button>();		
+		for (int i=0; i<tests.size(); i++)
+		{		
+			final int id = tests.get(i);
+			
+			Button button = new Button(this);
+			button.setTypeface(MainActivity.FONT);
+			button.setPadding(0, 30, 0, 30);
+			button.setTextSize(18f);
+			button.getBackground().setColorFilter(this.getResources().getColor(R.color.jh_blue), PorterDuff.Mode.MULTIPLY);
+			button.setOnClickListener(new OnClickListener() 
 			{
-				Intent testActivity = new Intent(getApplicationContext(), TestActivity.class);
-				testActivity.putExtra("TEST_NAME", testName);
-				startActivity(testActivity);					
-			}
-		});
-		test.setText(testName);
-		inner.addView(test);
+				@Override
+				public void onClick(View v) 
+				{
+					Intent testActivity = new Intent(getApplicationContext(), TestActivity.class);
+					testActivity.putExtra("TEST_ID", id);
+					startActivity(testActivity);					
+				}
+			});
+			String testName = mySQLiteHandler.getTestNameById(id);
+			button.setText(testName);
+			buttons.add(button);
+		}
+		
+		for (Button button : buttons)
+		{
+			inner.addView(button);
+		}
 		
 		TextView response = new TextView(this);
-		response.setTypeface(font);
+		response.setTypeface(MainActivity.FONT);
 		response.setPadding(0, 30, 0, 30);
 		response.setTextSize(18f);
 		response.setText(data[CategoryHandler.getIndex("CONTROL")]);
 		inner.addView(response);
 		
 		Button email = new Button(this);
-		email.setTypeface(font);
+		email.setTypeface(MainActivity.FONT);
 		email.setPadding(0, 30, 0, 30);
 		email.setTextSize(18f);
 		email.getBackground().setColorFilter(this.getResources().getColor(R.color.jh_blue), PorterDuff.Mode.MULTIPLY);
@@ -189,5 +205,35 @@ public class SummaryActivity extends Activity
 		
 		scroll.addView(inner);	
 		lower.addView(scroll);
+	}
+	
+	private String getCategoryText()
+	{
+		String text = "";
+		int ADDED = 0;
+		for (int i=0; i<TYPES; i++)
+		{
+			if (types[i])
+			{
+				text += CATEGORIES[i] + " " + ICONS[i];
+				ADDED++;
+				
+				if (ADDED < COUNT) text += "  |  ";
+			}
+		}
+		return text;
+	}
+	
+	private ArrayList<Integer> getTestIdList()
+	{
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		
+		String test1 = data[CategoryHandler.getIndex("TEST_1")];
+		String test2 = data[CategoryHandler.getIndex("TEST_2")];
+		
+		if (test1 != null) list.add(Integer.parseInt(test1));
+		if (test2 != null) list.add(Integer.parseInt(test2));
+		
+		return list;
 	}
 }

@@ -15,7 +15,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 public class TakePictureActivity extends Activity 

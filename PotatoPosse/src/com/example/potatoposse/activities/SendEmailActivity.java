@@ -34,11 +34,13 @@ import android.widget.Toast;
 
 public class SendEmailActivity extends Activity 
 {
-    ListView listView;
-    EditText search;
-    Button newAddress;
-    ArrayAdapter<String> adapter;
-    String img;
+	private String img;
+	
+    private ListView listView;
+    private EditText search;
+    private Button newAddress;
+    
+    private ArrayAdapter<String> adapter;   
     
     @Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -50,10 +52,15 @@ public class SendEmailActivity extends Activity
         
         setContentView(R.layout.sendemail);
         
-        img = getIntent().getExtras().getString("IMAGE");             
-        search = (EditText) findViewById(R.id.search);        	
+        img = getIntent().getExtras().getString("IMAGE"); 
         
-        newAddress = (Button) findViewById (R.id.newAddress);      
+        setupView();
+    }
+    
+    private void setupView()
+    {
+    	newAddress = (Button)findViewById(R.id.newAddress);    
+        newAddress.setTypeface(MainActivity.FONT);
         newAddress.setOnClickListener(new OnClickListener()
         {
         	public void onClick(View view)
@@ -82,11 +89,11 @@ public class SendEmailActivity extends Activity
 						}
 						else
 						{
-							 Toast.makeText(SendEmailActivity.this, "Please enter a valid email address!", Toast.LENGTH_SHORT).show();
+							 Toast.makeText(SendEmailActivity.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
 						}						
 					}
 				});        		
-        		ad.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",new DialogInterface.OnClickListener() 
+        		ad.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() 
         		{
         			@Override
 					public void onClick(DialogInterface dialog, int which) { }
@@ -94,8 +101,6 @@ public class SendEmailActivity extends Activity
         		ad.show();
         	}
         });        
-        
-        listView = (ListView) findViewById(R.id.list);
         
         final ArrayList<Contact> contacts = getNameEmailDetails();
         ArrayList<String> names = new ArrayList<String>();;
@@ -109,6 +114,7 @@ public class SendEmailActivity extends Activity
         
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
         
+        listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter); 
         listView.setOnItemClickListener(new OnItemClickListener() 
         {
@@ -126,10 +132,11 @@ public class SendEmailActivity extends Activity
             		}
             	}
             	 
-            	sendEmail((String) listView.getItemAtPosition(position), to);                
+            	sendEmail((String)listView.getItemAtPosition(position), to);                
         	}       
         }); 
         
+        search = (EditText)findViewById(R.id.search); 
         search.addTextChangedListener(new TextWatcher() 
         { 
             @Override
@@ -155,7 +162,7 @@ public class SendEmailActivity extends Activity
 		  email.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+img));
 		  email.setType("message/rfc822"); //we need setType to prompts only email clients
 
-		  startActivity(Intent.createChooser(email, "Choose an Email client :"));
+		  startActivity(Intent.createChooser(email, "Choose an Email client:"));
     }
     
 	private ArrayList<Contact> getNameEmailDetails() 

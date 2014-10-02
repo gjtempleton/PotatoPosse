@@ -2,7 +2,6 @@ package com.example.potatoposse.utils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,18 +12,14 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import android.content.Context;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
-public class HTTPHandler {
+public class HTTPHandler 
+{
 	HttpClient client = new DefaultHttpClient();
 	final String TEXT_LOCATION = "http://54.72.106.175/static/lastUpdated.txt";
 	final String DB_LOCATION = "http://54.72.106.175/static/db.sqlite3";
@@ -70,7 +65,8 @@ public class HTTPHandler {
 			BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
 			String str;
 			//Set local lastUpdateOnServer to be date read in from server in form yyyyMMdd
-			while ((str = in.readLine()) != null) {
+			while ((str = in.readLine()) != null) 
+			{
 				lastUpdateOnServer += str;            	
 			}
 			in.close();
@@ -79,10 +75,11 @@ public class HTTPHandler {
 			
 			int serverDate = Integer.parseInt(lastUpdateOnServer);
 			int deviceDate = Integer.parseInt(lastUpdateOnDevice);
+			
 			if(serverDate>deviceDate) return false;
-		} catch (MalformedURLException e) {
-		} catch (IOException e) {
-		}
+		} 
+		catch (MalformedURLException e) { } 
+		catch (IOException e) { }
 		return true;
 	}
 
@@ -90,7 +87,8 @@ public class HTTPHandler {
 	{
 		try
 		{
-			for(int i = 0; i<locations.length; i++){
+			for (int i = 0; i<locations.length; i++)
+			{
 				URL imagesUrl = new URL(locations[i][2]);
 
 				URLConnection ucon = imagesUrl.openConnection();
@@ -148,6 +146,7 @@ public class HTTPHandler {
 
 			InputStream is = ucon.getInputStream();
 			BufferedInputStream inStream = new BufferedInputStream(is, 1024 * 5);
+			
 			/**
 			 * Update last time database was updated
 			 */

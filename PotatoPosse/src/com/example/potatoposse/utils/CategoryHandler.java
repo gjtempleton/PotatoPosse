@@ -33,7 +33,9 @@ public class CategoryHandler
 	public static int getIndex(String field)
 	{
 		if (field.equals("DESCRIPTION")) return 0;
-		else if (field.equals("CONTROL")) return 1;
+		else if (field.equals("TEST_1")) return 1;
+		else if (field.equals("TEST_2")) return 2;
+		else if (field.equals("CONTROL")) return 3;
 		
 		return -1;
 	}
