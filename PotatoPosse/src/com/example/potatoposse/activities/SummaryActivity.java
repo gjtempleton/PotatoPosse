@@ -16,6 +16,10 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.View.OnClickListener;
 import android.view.View;
@@ -145,7 +149,9 @@ public class SummaryActivity extends Activity
 		description.setTypeface(MainActivity.FONT);
 		description.setPadding(0, 30, 0, 30);
 		description.setTextSize(18f);
-		description.setText(data[CategoryHandler.getIndex("DESCRIPTION")]);
+		Spannable dSpan = new SpannableString("DESCRIPTION\n"+data[CategoryHandler.getIndex("DESCRIPTION")]);
+		dSpan.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.jh_purple)), 0, 11, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		description.setText(dSpan);
 		inner.addView(description);
 		
 		ArrayList<Integer> tests = getTestIdList();		
@@ -179,12 +185,14 @@ public class SummaryActivity extends Activity
 			inner.addView(button);
 		}
 		
-		TextView response = new TextView(this);
-		response.setTypeface(MainActivity.FONT);
-		response.setPadding(0, 30, 0, 30);
-		response.setTextSize(18f);
-		response.setText(data[CategoryHandler.getIndex("CONTROL")]);
-		inner.addView(response);
+		TextView control = new TextView(this);
+		control.setTypeface(MainActivity.FONT);
+		control.setPadding(0, 30, 0, 30);
+		control.setTextSize(18f);
+		Spannable cSpan = new SpannableString("CONTROL\n"+data[CategoryHandler.getIndex("CONTROL")]);
+		cSpan.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.jh_purple)), 0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		control.setText(cSpan);
+		inner.addView(control);
 		
 		Button email = new Button(this);
 		email.setTypeface(MainActivity.FONT);
