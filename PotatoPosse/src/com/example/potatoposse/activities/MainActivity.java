@@ -229,7 +229,7 @@ public class MainActivity extends TabActivity
     	AlertDialog ad = new AlertDialog.Builder(MainActivity.this).create();
 		ad.setTitle("Update");
 		ad.setMessage("Do you wish to update the database and media files?");      		
-		ad.setButton(DialogInterface.BUTTON_POSITIVE, "Enter", new DialogInterface.OnClickListener() 
+		ad.setButton(DialogInterface.BUTTON_POSITIVE, "Yes", new DialogInterface.OnClickListener() 
 		{
 			@Override
 			public void onClick(DialogInterface dialog, int which) 
@@ -240,7 +240,7 @@ public class MainActivity extends TabActivity
 				Toast.makeText(MainActivity.this, "Media files successfully updated", Toast.LENGTH_SHORT).show();
 			}
 		});        		
-		ad.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() 
+		ad.setButton(DialogInterface.BUTTON_NEGATIVE, "No", new DialogInterface.OnClickListener() 
 		{
 			@Override
 			public void onClick(DialogInterface dialog, int which) 
